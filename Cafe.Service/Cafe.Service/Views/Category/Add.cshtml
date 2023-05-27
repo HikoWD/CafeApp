@@ -1,0 +1,14 @@
+﻿@model Cafe.Service.Models.Menu.Category
+
+@using (Html.BeginForm("AddSave", "Category", FormMethod.Post))
+{
+    <div>
+        @Html.HiddenFor(model => model.Id)
+        @Html.LabelFor(model => model.Title, "Название категории")
+        @Html.EditorFor(model => model.Title)
+        <input type="submit" value="Добавить" />
+        <input type="button"
+           value="Назад"
+           onclick="location.href='@Url.Action("Index", "Category")'" />
+    </div>
+}

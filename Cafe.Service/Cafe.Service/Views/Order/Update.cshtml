@@ -1,0 +1,25 @@
+﻿@model Cafe.Service.Models.Menu.MenuItem
+
+@using (Html.BeginForm("UpdateSave", "MenuItem", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.LabelFor(model => model.Title, "Название продукта")
+    @Html.EditorFor(model => model.Title)
+    <br />
+    @Html.LabelFor(model => model.Category.Title, "Название категории")
+    @Html.DropDownListFor(model => model.Category.Title, ViewBag.Categories as SelectList)
+    <br />
+    @Html.LabelFor(model => model.Description, "Описание")
+    @Html.EditorFor(model => model.Description)
+    <br />
+    @Html.LabelFor(model => model.Price, "Цена")
+    @Html.EditorFor(model => model.Price)
+    <br />
+    @Html.LabelFor(model => model.Weight, "Вес")
+    @Html.EditorFor(model => model.Weight)
+    <br />
+    <input type="submit" value="Сохранить" />
+    <input type="button"
+       value="Назад"
+       onclick="location.href='@Url.Action("Index", "MenuItem")'" />
+}

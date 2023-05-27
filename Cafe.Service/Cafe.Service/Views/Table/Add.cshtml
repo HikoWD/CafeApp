@@ -1,0 +1,17 @@
+﻿@model Cafe.Service.Models.Table.Table
+
+@using (Html.BeginForm("AddSave", "Table", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(model => model.Title, "Номер столика")
+        @Html.EditorFor(model => model.Title)
+        <br />
+        @Html.LabelFor(model => model.State, "Состояние столика")
+        @Html.DropDownListFor(model => model.State, ViewBag.States as SelectList)
+        <br />
+        <input type="submit" value="Добавить" />
+        <input type="button"
+           value="Назад"
+           onclick="location.href='@Url.Action("Index", "Table")'" />
+    </div>
+}

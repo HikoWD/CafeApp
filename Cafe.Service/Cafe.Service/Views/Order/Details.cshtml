@@ -1,0 +1,46 @@
+﻿@using Cafe.Service.Models.Menu;
+@using Cafe.Service.Models.Order;
+@using Cafe.Service.Models.Shared;
+@model Cafe.Service.Models.Order.Order
+
+<span>
+    Описание заказа
+</span>
+
+<div>
+        <span>Номер заказа: @Model.Id</span>
+        <span>Время заказа: @Model.Timestamp</span>
+        
+    @switch (@Model.OrderState)
+    {
+        case OrderState.Pending:
+            <span>Состояние заказа: Ожидает</span>
+            break;
+            case OrderState.Success:
+            <span>Состояние заказа: Потвержден</span>
+            break;
+             case OrderState.Cancel:
+            <span>Состояние заказа: Отменен</span>
+            break;
+    }
+
+      </div>
+@foreach (MenuItem item in ViewBag.MenuItems)
+{
+        <span>Название продукта: @item.Title</span>
+        <br />
+        <span>Категория: @item.Category?.Title</span>
+        <br />
+        <span>Описание: @item.Description</span>
+        <br />
+        <span>Цена: @item.Price</span>
+        <br />
+        <span>Вес: @item.Weight</span>
+        <br />
+}
+
+@if(Model.OrderState == OrderState.Pending)
+{
+<input type="button" value="потвердить заказ" onclick="location.href='@Url.Action("Success", "Order",  @Model)'">
+<input type="button" value="отменить заказ" onclick="location.href='@Url.Action("Cancel", "Order",  @Model)'">
+}

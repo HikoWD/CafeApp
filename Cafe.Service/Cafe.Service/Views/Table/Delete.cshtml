@@ -1,0 +1,18 @@
+﻿@model Cafe.Service.Models.Table.Table
+
+@using (Html.BeginForm("DeleteSave", "Table", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="card">
+        <span>Номер столика: @Model.Title</span>
+        <br />
+        <span>@Model.State</span>
+        <br />
+        <input type="submit"
+           value="Подтвердить" />
+        <input type="button"
+           value="Назад"
+           onclick="location.href='@Url.Action("Index", "Table")'" />
+    </div>
+}
+

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CafeApp</string>
+    <string name="test_string">App Bar Title</string>
+</resources>

@@ -1,0 +1,24 @@
+﻿@model Cafe.Service.Models.Menu.MenuItem
+
+@using (Html.BeginForm("DeleteSave", "MenuItem", FormMethod.Post))
+{
+    @Html.HiddenFor(Model => Model.Id)
+    <div>
+         <span>Название продукта: @Model.Title</span>
+        <br />
+        <span>Категория: @Model.Category?.Title</span>
+        <br />
+        <span>Описание: @Model.Description</span>
+        <br />
+        <span>Цена: @Model.Price</span>
+        <br />
+        <span>Вес: @Model.Weight</span>
+        <br />
+        <input type="submit"
+           value="Подтвердить" />
+        <input type="button"
+           value="Назад"
+           onclick="location.href='@Url.Action("Index", "MenuItem")'" />
+    </div>
+}
+

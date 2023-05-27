@@ -1,0 +1,18 @@
+﻿@using Cafe.Service.Models.Shared;
+@model CollectionResponse<Cafe.Service.Models.Menu.Category>
+
+    
+<span>
+    Категории
+</span>
+<input type="button" onclick="location.href='@Url.Action("Add", "Category")'" value="Добавить" />
+
+@foreach (var category in Model.Items)
+{
+    <div>
+        <span>Название категории: @category.Title</span>
+
+        <input type="button" value="изменить" onclick="location.href='@Url.Action("Update", "Category",  category)'">
+        <input type="button" value="удалить" onclick="location.href='@Url.Action("Delete", "Category",  category)'">
+    </div>
+}

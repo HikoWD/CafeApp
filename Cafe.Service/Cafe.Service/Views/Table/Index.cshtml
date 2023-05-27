@@ -1,0 +1,35 @@
+﻿@using Cafe.Service.Models.Shared;
+@using Cafe.Service.Models.Table;
+@model CollectionResponse<Cafe.Service.Models.Table.Table>
+
+
+<span class="title">
+    Столики
+</span>
+<br />
+<input type="button" onclick="location.href='@Url.Action("Add", "Table")'" value="Добавить" />
+
+<div class="flex-row">
+    @foreach (var table in Model.Items)
+    {
+        <div class="card">
+            <span>Номер столика: @table.Title</span>
+            @{
+                switch (@table.State)
+                {
+                    case State.Occupied:
+                        <span>Состояние столика: Занят</span>
+                        break;
+                    case State.NotOccupied:
+                        <span>Состояние столика: Свободен</span>
+                        break;
+                    case State.Reserved:
+                        <span>Состояние столика: Зарезирвирован</span>
+                        break;
+                }
+            }
+            <input type="button" value="Изменить" onclick="location.href='@Url.Action("Update", "Table",  @table)'">
+            <input type="button" value="Удалить" onclick="location.href='@Url.Action("Delete", "Table",  @table)'">
+        </div>
+    }
+</div>

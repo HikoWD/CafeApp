@@ -1,0 +1,48 @@
+﻿@using Cafe.Service.Models.Order;
+@using Cafe.Service.Models.Shared;
+@model CollectionResponse<Cafe.Service.Models.Order.Order>
+
+<span class="title">
+    Заказы
+</span>
+<br />
+<input type="button" onclick="location.href='@Url.Action("Add", "Order")'" value="Добавить" />
+
+<div class="flex-column">
+    <span>Ожидают:</span>
+    <div class="flex-row">
+        @foreach (var order in Model.Items.Where(x => x.OrderState == OrderState.Pending))
+        {
+            <div class="card">
+                <span>Номер заказа: @order.Id @(order.OrderState)</span>
+                <span>Номер заказа: @order.Timestamp</span>
+                <input type="button" value="Детали" onclick="location.href='@Url.Action("Details", "Order",  order)'">
+            </div>
+        }
+    </div>
+    <span>Обработаны:</span>
+    <div class="flex-row">
+        
+        @foreach (var order in Model.Items.Where(x => x.OrderState == OrderState.Success))
+        {
+            <div class="card">
+                <span>Номер заказа: @order.Id @(order.OrderState)</span>
+                <span>Номер заказа: @order.Timestamp</span>
+                <input type="button" value="Детали" onclick="location.href='@Url.Action("Details", "Order",  order)'">
+            </div>
+        }
+    </div>
+    <span>Отменены:</span>
+    <div class="flex-row">
+    
+ 
+        @foreach (var order in Model.Items.Where(x => x.OrderState == OrderState.Cancel))
+        {
+            <div class="card">
+                <span>Номер заказа: @order.Id @(order.OrderState)</span>
+                <span>Номер заказа: @order.Timestamp</span>
+                <input type="button" value="Детали" onclick="location.href='@Url.Action("Details", "Order",  order)'">
+            </div>
+        }
+    </div>
+</div>

@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import by.ivan.CafeApp.ui.domain.category.usecase.SearchNewCategoryUseCase
-import by.ivan.CafeApp.ui.domain.menu.usecase.SearchNewMenuItemUseCase
+import by.ivan.CafeApp.domain.category.usecase.SearchNewCategoryUseCase
+import by.ivan.CafeApp.domain.menu.usecase.SearchNewMenuItemUseCase
 import javax.inject.Inject
 
 class DatabaseWorkerFactory @Inject constructor(

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">CafeApp</string>
     <string name="test_string">App Bar Title</string>
+    <string name="menuItems_screen">Меню</string>
+    <string name="searchItems_screen">Поиск</string>
+    <string name="cart_screen">Корзина</string>
+    <string name="historyOrders_screen">История заказов</string>
 </resources>

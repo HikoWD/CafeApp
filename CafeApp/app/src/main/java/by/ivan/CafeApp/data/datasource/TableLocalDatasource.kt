@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.data.datasource
 
-import by.ivan.CafeApp.ui.data.local.dao.TableDao
-import by.ivan.CafeApp.ui.data.local.entity.TableLocalModel
+import by.ivan.CafeApp.data.local.dao.TableDao
+import by.ivan.CafeApp.data.local.entity.TableLocalModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

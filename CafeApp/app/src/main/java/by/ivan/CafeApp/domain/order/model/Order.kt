@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.domain.order.model
 
 import android.os.Parcelable
-import by.ivan.CafeApp.ui.data.local.entity.OrderLocalModel
+import by.ivan.CafeApp.data.local.entity.OrderLocalModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

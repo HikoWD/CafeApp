@@ -2,8 +2,8 @@ package by.ivan.CafeApp.data.local.di
 
 import android.content.Context
 import androidx.room.Room
-import by.ivan.CafeApp.ui.data.local.dao.*
-import by.ivan.CafeApp.ui.data.local.database.CafeDatabase
+import by.ivan.CafeApp.data.local.dao.*
+import by.ivan.CafeApp.data.local.database.CafeDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -7,6 +7,9 @@ namespace Cafe.Service.Models.Authentication
     {
         ApplicationContext _context;
 
+        public const string AdminRole = "Admin";
+        public const string OperatorRole = "Operator";
+
         public UserRepository(ApplicationContext context)
         {
             _context = context;

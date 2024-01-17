@@ -1,8 +1,8 @@
 package by.ivan.CafeApp.domain.menu.usecase
 
-import by.ivan.CafeApp.ui.data.repo.MenuItemRepository
-import by.ivan.CafeApp.ui.domain.menu.model.MenuItem
-import by.ivan.CafeApp.ui.domain.menu.model.toDomain
+import by.ivan.CafeApp.data.repo.MenuItemRepository
+import by.ivan.CafeApp.domain.menu.model.MenuItem
+import by.ivan.CafeApp.domain.menu.model.toDomain
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

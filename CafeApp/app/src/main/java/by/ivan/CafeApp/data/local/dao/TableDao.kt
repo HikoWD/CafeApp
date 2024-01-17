@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import by.ivan.CafeApp.ui.data.local.entity.TableLocalModel
+import by.ivan.CafeApp.data.local.entity.TableLocalModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

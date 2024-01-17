@@ -1,6 +1,6 @@
 package by.ivan.CafeApp.domain.menu.usecase
 
-import by.ivan.CafeApp.ui.data.repo.MenuItemRepository
+import by.ivan.CafeApp.data.repo.MenuItemRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 

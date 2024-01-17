@@ -5,10 +5,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import by.ivan.CafeApp.ui.data.local.entity.CategoryLocalModel
-import by.ivan.CafeApp.ui.data.local.entity.MenuItemLocalModel
-import by.ivan.CafeApp.ui.data.local.entity.TableLocalModel
-import by.ivan.CafeApp.ui.data.local.entity.TableVersionLocalModel
+import by.ivan.CafeApp.data.local.entity.CategoryLocalModel
+import by.ivan.CafeApp.data.local.entity.MenuItemLocalModel
+import by.ivan.CafeApp.data.local.entity.TableLocalModel
+import by.ivan.CafeApp.data.local.entity.TableVersionLocalModel
 
 @Dao
 interface TableVersionDao {

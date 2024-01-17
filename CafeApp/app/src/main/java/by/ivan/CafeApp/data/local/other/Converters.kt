@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.data.local.other
 
 import androidx.room.TypeConverter
-import by.ivan.CafeApp.ui.data.local.entity.OrderDetailsLocalModel
+import by.ivan.CafeApp.data.local.entity.OrderDetailsLocalModel
 import com.google.gson.Gson
 import java.util.*
 

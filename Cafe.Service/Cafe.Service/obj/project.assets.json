@@ -3606,19 +3606,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ivan\\.nuget\\packages\\": {}
+    "C:\\Users\\Ivan\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Education\\Курсовой проект\\Cafe.Service\\Cafe.Service\\Cafe.Service.csproj",
+      "projectUniqueName": "C:\\Education\\Course projects\\CafeApp\\Cafe.Service\\Cafe.Service\\Cafe.Service.csproj",
       "projectName": "Cafe.Service",
-      "projectPath": "C:\\Education\\Курсовой проект\\Cafe.Service\\Cafe.Service\\Cafe.Service.csproj",
+      "projectPath": "C:\\Education\\Course projects\\CafeApp\\Cafe.Service\\Cafe.Service\\Cafe.Service.csproj",
       "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-      "outputPath": "C:\\Education\\Курсовой проект\\Cafe.Service\\Cafe.Service\\obj\\",
+      "outputPath": "C:\\Education\\Course projects\\CafeApp\\Cafe.Service\\Cafe.Service\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
         "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3676,7 +3681,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -20,7 +20,7 @@ gradlePlugin {
 
 object Deps {
     const val ANDROID_GRADLE = "com.android.tools.build:gradle:7.3.0"
-    const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+    const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20"
     const val HILT_GRADLE = "com.google.dagger:hilt-android-gradle-plugin:2.38.1"
     const val NAVIGATION = "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1"
     const val VERSION_CHECKER = "com.github.ben-manes:gradle-versions-plugin:0.39.0"

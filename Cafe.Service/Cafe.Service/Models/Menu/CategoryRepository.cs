@@ -71,10 +71,6 @@ namespace Cafe.Service.Models.Menu
             _context.Database.ExecuteSql($"EXECUTE dbo.RemoveCategory {category.Id}");
             _context.SaveChanges();
             return category;
-
-            //_context.Categories.Remove(category);
-            //_context.SaveChanges();
-            //return category;
         }
     }
 }

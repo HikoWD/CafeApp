@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9d1fd92a7531273298501cd13814424b",
+    "identityHash": "95cfc1decfa1c39170ca4d2a99157af1",
     "entities": [
       {
         "tableName": "CategoryLocalModel",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "MenuItemLocalModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `image` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `price` REAL NOT NULL, `weight` REAL NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`categoryId`) REFERENCES `CategoryLocalModel`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `image` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `price` REAL NOT NULL, `weight` REAL NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`categoryId`) REFERENCES `CategoryLocalModel`(`id`) ON UPDATE CASCADE ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -87,8 +87,8 @@
         "foreignKeys": [
           {
             "table": "CategoryLocalModel",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
+            "onDelete": "NO ACTION",
+            "onUpdate": "CASCADE",
             "columns": [
               "categoryId"
             ],
@@ -237,12 +237,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "CartItemLocalModel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`menuItemId` INTEGER NOT NULL, `count` INTEGER NOT NULL, PRIMARY KEY(`menuItemId`))",
+        "fields": [
+          {
+            "fieldPath": "menuItemId",
+            "columnName": "menuItemId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "count",
+            "columnName": "count",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "menuItemId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9d1fd92a7531273298501cd13814424b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95cfc1decfa1c39170ca4d2a99157af1')"
     ]
   }
 }

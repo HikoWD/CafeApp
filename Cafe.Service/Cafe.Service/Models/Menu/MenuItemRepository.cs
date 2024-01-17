@@ -33,6 +33,7 @@ namespace Cafe.Service.Models.Menu
             }           
             item.CategoryId = menuItem.CategoryId;
             item.Title = menuItem.Title;
+            item.Image = menuItem.Image;
             item.Description = menuItem.Description;
             item.Price = menuItem.Price;
             item.Weight = menuItem.Weight;

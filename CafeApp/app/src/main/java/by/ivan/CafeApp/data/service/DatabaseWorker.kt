@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import by.ivan.CafeApp.ui.domain.category.usecase.SearchNewCategoryUseCase
-import by.ivan.CafeApp.ui.domain.menu.usecase.SearchNewMenuItemUseCase
-import by.ivan.CafeApp.ui.domain.result.CompletableResult
+import by.ivan.CafeApp.domain.category.usecase.SearchNewCategoryUseCase
+import by.ivan.CafeApp.domain.menu.usecase.SearchNewMenuItemUseCase
+import by.ivan.CafeApp.domain.result.CompletableResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers

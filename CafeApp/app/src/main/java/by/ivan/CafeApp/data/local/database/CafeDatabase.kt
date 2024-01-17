@@ -3,9 +3,9 @@ package by.ivan.CafeApp.data.local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import by.ivan.CafeApp.ui.data.local.dao.*
-import by.ivan.CafeApp.ui.data.local.entity.*
-import by.ivan.CafeApp.ui.data.local.other.Converters
+import by.ivan.CafeApp.data.local.dao.*
+import by.ivan.CafeApp.data.local.entity.*
+import by.ivan.CafeApp.data.local.other.Converters
 
 @Database(
     entities = [

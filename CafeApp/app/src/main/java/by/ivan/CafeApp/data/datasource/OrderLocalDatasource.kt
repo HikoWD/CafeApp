@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.data.datasource
 
-import by.ivan.CafeApp.ui.data.local.dao.OrderDao
-import by.ivan.CafeApp.ui.data.local.entity.OrderLocalModel
+import by.ivan.CafeApp.data.local.dao.OrderDao
+import by.ivan.CafeApp.data.local.entity.OrderLocalModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

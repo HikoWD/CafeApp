@@ -1,9 +1,9 @@
 package by.ivan.CafeApp.data.remote.util
 
-import by.ivan.CafeApp.ui.data.remote.model.*
-import by.ivan.CafeApp.ui.domain.order.model.Order
-import by.ivan.CafeApp.ui.domain.order.model.OrderParams
-import by.ivan.CafeApp.ui.domain.table.model.Table
+import by.ivan.CafeApp.data.remote.model.*
+import by.ivan.CafeApp.domain.order.model.Order
+import by.ivan.CafeApp.domain.order.model.OrderParams
+import by.ivan.CafeApp.domain.table.model.Table
 import com.haroldadmin.cnradapter.NetworkResponse
 import retrofit2.http.*
 

@@ -3,7 +3,7 @@ object Versions {
     const val Ktlint = "0.42.1"
 
     const val Gradle = "7.3.3"
-    const val Kotlin = "1.7.20"
+    const val Kotlin = "1.8.20"
 
     const val CoreKtx = "1.7.0"
     const val FragmentKtx = "1.5.3"

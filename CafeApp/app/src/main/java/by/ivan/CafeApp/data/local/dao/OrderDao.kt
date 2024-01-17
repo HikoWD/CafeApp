@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.data.local.dao
 
 import androidx.room.*
-import by.ivan.CafeApp.ui.data.local.entity.OrderLocalModel
+import by.ivan.CafeApp.data.local.entity.OrderLocalModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

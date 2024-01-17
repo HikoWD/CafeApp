@@ -1,7 +1,6 @@
 package by.ivan.CafeApp.data.remote.di
 
-import by.ivan.CafeApp.data.Constants
-import by.ivan.CafeApp.ui.data.remote.util.ApiService
+import by.ivan.CafeApp.data.remote.util.ApiService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
@@ -22,7 +21,7 @@ import javax.inject.Singleton
 class ApiModule {
     @Singleton
     @Provides
-    fun provideGson(): Gson { //todo ??
+    fun provideGson(): Gson {
         return GsonBuilder().setLenient().create()
     }
 

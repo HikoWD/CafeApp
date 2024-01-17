@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.data.datasource
 
-import by.ivan.CafeApp.ui.data.local.dao.MenuItemDao
-import by.ivan.CafeApp.ui.data.local.entity.MenuItemLocalModel
+import by.ivan.CafeApp.data.local.dao.MenuItemDao
+import by.ivan.CafeApp.data.local.entity.MenuItemLocalModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

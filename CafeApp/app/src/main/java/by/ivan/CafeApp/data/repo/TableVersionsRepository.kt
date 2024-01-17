@@ -1,9 +1,9 @@
 package by.ivan.CafeApp.data.repo
 
-import by.ivan.CafeApp.ui.data.datasource.TableVersionLocalDatasource
-import by.ivan.CafeApp.ui.data.datasource.TableVersionRemoteDatasource
-import by.ivan.CafeApp.ui.data.local.entity.TableVersionLocalModel
-import by.ivan.CafeApp.ui.data.remote.model.TableVersionRemoteModelList
+import by.ivan.CafeApp.data.datasource.TableVersionLocalDatasource
+import by.ivan.CafeApp.data.datasource.TableVersionRemoteDatasource
+import by.ivan.CafeApp.data.local.entity.TableVersionLocalModel
+import by.ivan.CafeApp.data.remote.model.TableVersionRemoteModelList
 import javax.inject.Inject
 import javax.inject.Singleton
 

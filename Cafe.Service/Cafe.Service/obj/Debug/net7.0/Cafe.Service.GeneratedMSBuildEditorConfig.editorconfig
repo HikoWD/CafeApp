@@ -9,93 +9,103 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Cafe.Service
 build_property.RootNamespace = Cafe.Service
-build_property.ProjectDir = C:\Education\Курсовой проект\Cafe.Service\Cafe.Service\
+build_property.ProjectDir = C:\Education\Course projects\CafeApp\Cafe.Service\Cafe.Service\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Education\Курсовой проект\Cafe.Service\Cafe.Service
+build_property.MSBuildProjectDirectory = C:\Education\Course projects\CafeApp\Cafe.Service\Cafe.Service
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Category/Add.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Category/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Category/Delete.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Category/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Category/Index.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Category/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Category/Update.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Category/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/MenuItem/Add.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/MenuItem/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudUl0ZW1cQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/MenuItem/Delete.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/MenuItem/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudUl0ZW1cRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/MenuItem/Index.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/MenuItem/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudUl0ZW1cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/MenuItem/Update.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/MenuItem/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudUl0ZW1cVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Order/Add.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Order/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Order/Details.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Order/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Order/Index.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Order/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Order/Update.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Order/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Shared/Error.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/ProductAnalysis/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdEFuYWx5c2lzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/ProductAnalysis/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdEFuYWx5c2lzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Table/Add.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Table/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Table/Delete.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Table/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Table/Index.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Table/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Table/Update.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Table/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVcVXBkYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/_ViewImports.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/_ViewStart.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Education/Курсовой проект/Cafe.Service/Cafe.Service/Views/Shared/_Layout.cshtml]
+[C:/Education/Course projects/CafeApp/Cafe.Service/Cafe.Service/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-u98512k09o

@@ -1,8 +1,8 @@
 package by.ivan.CafeApp.domain.category.usecase
 
-import by.ivan.CafeApp.ui.data.repo.CategoryRepository
-import by.ivan.CafeApp.ui.domain.category.model.Category
-import by.ivan.CafeApp.ui.domain.category.model.toDomain
+import by.ivan.CafeApp.data.repo.CategoryRepository
+import by.ivan.CafeApp.domain.category.model.Category
+import by.ivan.CafeApp.domain.category.model.toDomain
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

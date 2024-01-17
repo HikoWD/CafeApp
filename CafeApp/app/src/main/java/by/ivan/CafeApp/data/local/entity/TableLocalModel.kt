@@ -2,9 +2,9 @@ package by.ivan.CafeApp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import by.ivan.CafeApp.ui.data.remote.model.TableRemoteModelList
-import by.ivan.CafeApp.ui.domain.table.model.State
-import by.ivan.CafeApp.ui.domain.table.model.toState
+import by.ivan.CafeApp.data.remote.model.TableRemoteModelList
+import by.ivan.CafeApp.domain.table.model.State
+import by.ivan.CafeApp.domain.table.model.toState
 
 @Entity
 data class TableLocalModel(

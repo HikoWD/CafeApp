@@ -16,11 +16,11 @@ object Dependencies {
     }
 
     object Compose {
-        private const val material = "1.0.0-rc01"
+        private const val material = "1.1.2" //"1.0.0-rc01"
         private const val materialV1 = "1.1.1"
-        private const val windowSizeUtils = "1.0.0-rc01"
+        private const val windowSizeUtils = "1.1.2" //"1.0.0-rc01"
         private const val materialThemeAdapter = "1.1.16"
-        private const val tooling = "1.2.1"
+        private const val tooling = "1.4.3" //"1.2.1"
 
         const val ComposeNavigation = "androidx.navigation:navigation-compose:2.5.3"
         const val ComposeAnimatedNavigation = "com.google.accompanist:accompanist-navigation-animation:0.27.1"

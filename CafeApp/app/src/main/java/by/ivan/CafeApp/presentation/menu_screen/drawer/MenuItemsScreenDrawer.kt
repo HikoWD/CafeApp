@@ -21,10 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import by.ivan.CafeApp.ui.presentation.chooseTable_dialog.ChooseTableDialog
-import by.ivan.CafeApp.ui.presentation.chooseTable_dialog.ChooseTableDialogViewModel
-import by.ivan.CafeApp.ui.presentation.login_dialog.LoginDialog
-import by.ivan.CafeApp.ui.presentation.menu_screen.MenuItemsScreenViewModel
+import by.ivan.CafeApp.presentation.chooseTable_dialog.ChooseTableDialog
+import by.ivan.CafeApp.presentation.chooseTable_dialog.ChooseTableDialogViewModel
+import by.ivan.CafeApp.presentation.login_dialog.LoginDialog
+import by.ivan.CafeApp.presentation.menu_screen.MenuItemsScreenViewModel
 
 @Composable
 fun MenuItemsScreenDrawer(
@@ -70,7 +70,8 @@ private fun MenuItemsScreenDrawer(
     showLoginDialogClick: () -> Unit = {},
     onDrawerCloseSwipe: () -> Unit = {},
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()

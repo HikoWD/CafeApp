@@ -1,14 +1,14 @@
 package by.ivan.CafeApp.data.repo
 
 import android.content.Context
-import by.ivan.CafeApp.ui.data.datasource.OrderLocalDatasource
-import by.ivan.CafeApp.ui.data.datasource.OrderRemoteDatasource
-import by.ivan.CafeApp.ui.data.local.entity.OrderLocalModel
-import by.ivan.CafeApp.ui.data.local.entity.toLocalModel
-import by.ivan.CafeApp.ui.data.remote.model.OrderRemoteModelList
-import by.ivan.CafeApp.ui.data.remote.model.ResponseErrorMessage
-import by.ivan.CafeApp.ui.domain.order.model.Order
-import by.ivan.CafeApp.ui.domain.order.model.OrderDetails
+import by.ivan.CafeApp.data.datasource.OrderLocalDatasource
+import by.ivan.CafeApp.data.datasource.OrderRemoteDatasource
+import by.ivan.CafeApp.data.local.entity.OrderLocalModel
+import by.ivan.CafeApp.data.local.entity.toLocalModel
+import by.ivan.CafeApp.data.remote.model.OrderRemoteModelList
+import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
+import by.ivan.CafeApp.domain.order.model.Order
+import by.ivan.CafeApp.domain.order.model.OrderDetails
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class OrderRepository @Inject constructor(
 
         return result
     }
-    //TODO create tableVersion
+
     private suspend fun insertData(orders: List<OrderRemoteModelList.OrderRemoteModel>) {
         orderLocalDatasource.removeAll()
         orderLocalDatasource.saveOrders(orders.map {

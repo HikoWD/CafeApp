@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.domain.menu.model
 
 import android.os.Parcelable
-import by.ivan.CafeApp.ui.data.local.entity.MenuItemLocalModel
+import by.ivan.CafeApp.data.local.entity.MenuItemLocalModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

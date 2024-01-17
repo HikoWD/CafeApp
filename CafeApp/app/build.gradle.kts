@@ -1,5 +1,13 @@
 
-import extensions.*
+import extensions.androidTestImplementation
+import extensions.configureDefaultConfig
+import extensions.configureKotlinCompile
+import extensions.debugImplementation
+import extensions.implementation
+import extensions.kapt
+import extensions.setCompileOptions
+import extensions.setSigningConfigs
+import extensions.testImplementation
 
 plugins {
     id(GradlePlugins.AndroidApplication)
@@ -13,6 +21,16 @@ plugins {
 //    id("com.google.gms.google-services")
     id(GradlePlugins.JACOCO)
     id(GradlePlugins.JACOCO_REPORT)
+    id("com.google.devtools.ksp") version "1.8.20-1.0.11"
+}
+
+kotlin {
+    sourceSets.debug {
+        kotlin.srcDir("build/generated/ksp/debug/kotlin")
+    }
+    sourceSets.release {
+        kotlin.srcDir("build/generated/ksp/release/kotlin")
+    }
 }
 
 android {
@@ -54,7 +72,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.4.6"
     }
 
     jacoco {
@@ -67,6 +85,9 @@ android {
     }
 
     dependencies {
+        implementation("io.github.raamcosta.compose-destinations:animations-core:1.8.42-beta")
+        ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
+
         implementation("androidx.datastore:datastore-preferences:1.0.0")
         implementation("io.coil-kt:coil-compose:2.3.0") //asyncImage
         implementation(Dependencies.Compose.MaterialV1)

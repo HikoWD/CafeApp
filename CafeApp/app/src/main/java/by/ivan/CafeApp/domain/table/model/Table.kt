@@ -1,6 +1,6 @@
 package by.ivan.CafeApp.domain.table.model
 
-import by.ivan.CafeApp.ui.data.local.entity.TableLocalModel
+import by.ivan.CafeApp.data.local.entity.TableLocalModel
 
 data class Table(
     val id: Int = 1,

@@ -68,9 +68,16 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.Use(async (context, next) =>
+{
+    bool isAdmin = context.User.HasClaim(ClaimTypes.Role, UserRepository.AdminRole);
+    context.Items.Add("isAdmin", isAdmin);
+    await next();
+});
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=MenuItem}/{action=Index}/{id?}");
+    pattern: "{controller=Order}/{action=Index}/{id?}");
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -128,9 +135,15 @@ app.MapPost("/login", async (string? returnUrl, HttpContext context, UserReposit
     }
     
     // если пользователь не найден, отправляем статусный код 401
-    if (person is null) return Results.Unauthorized();
+    if (person is null) 
+        return Results.Unauthorized();
 
-    var claims = new List<Claim> { new Claim(ClaimTypes.Name, person.Email) };
+    var claims = new List<Claim> 
+    { 
+        new Claim(ClaimTypes.Name, person.Email),
+        new Claim(ClaimTypes.Role, person.Email == "admin@cafe.app" ? UserRepository.AdminRole : UserRepository.OperatorRole)
+    };
+
     // создаем объект ClaimsIdentity
     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
     // установка аутентификационных куки

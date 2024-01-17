@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zUxG+TywHl1JKIkyXoaqJ8iMNbEJZTzb8FFALwHOy4stgVJi+igzYruBMEtvKzqEixz+E9pcDJ+RTcwL87cExw==",
+  "dgSpecHash": "wuzI59+xPgMrhhuRJ8ptgjOZvWq+5o8HWELuAZhtQNCFxAXq8JASfnlgP0GWVeOEWvPEklwfpF9d3mYvP0wKaQ==",
   "success": true,
-  "projectFilePath": "C:\\Education\\Курсовой проект\\Cafe.Service\\Cafe.Service\\Cafe.Service.csproj",
+  "projectFilePath": "C:\\Education\\Course projects\\CafeApp\\Cafe.Service\\Cafe.Service\\Cafe.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ivan\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Ivan\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

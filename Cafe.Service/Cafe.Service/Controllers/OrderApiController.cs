@@ -15,13 +15,16 @@ namespace Cafe.Service.Controllers
     {
         private OrderProvider _orderProvider;
         private OrderDetailsRepository _orderDetailsRepository;
+        private MenuItemProvider _menuItemProvider;
 
         public OrderApiController(
             OrderProvider orderProvider, 
-            OrderDetailsRepository orderDetailsRepository)
+            OrderDetailsRepository orderDetailsRepository,
+            MenuItemProvider menuItemProvider)
         {
             _orderProvider = orderProvider;
             _orderDetailsRepository = orderDetailsRepository;
+            _menuItemProvider = menuItemProvider;
         }
         // GET: api/<OrderApiController>
         [HttpGet]
@@ -77,8 +80,22 @@ namespace Cafe.Service.Controllers
             {
                 return BadRequest();
             }
+            
+            if(orderParams.Table.Id == -1)
+            {
+                return NotFound();
+            }
 
-            return new JsonResult(_orderProvider.Add(orderParams.OrderDetails, orderParams.Table));
+            var orderDetails = orderParams.OrderDetails;
+            foreach (var menuItemId in orderDetails.MenuItemIds)
+            {
+                if (_menuItemProvider.Get(menuItemId) == null)
+                {
+                    return NotFound();
+                }
+            }
+
+            return new JsonResult(_orderProvider.Add(orderDetails, orderParams.Table));
         }
 
         //// PUT api/<OrderApiController>/5

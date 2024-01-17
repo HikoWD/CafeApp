@@ -1,6 +1,6 @@
 package by.ivan.CafeApp.domain.category.usecase
 
-import by.ivan.CafeApp.ui.data.repo.CategoryRepository
+import by.ivan.CafeApp.data.repo.CategoryRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 

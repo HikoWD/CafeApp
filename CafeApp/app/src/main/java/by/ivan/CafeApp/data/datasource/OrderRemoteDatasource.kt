@@ -1,9 +1,9 @@
 package by.ivan.CafeApp.data.datasource
 
-import by.ivan.CafeApp.ui.data.remote.model.OrderDetailsRemoteModel
-import by.ivan.CafeApp.ui.data.remote.model.OrderRemoteModelList
-import by.ivan.CafeApp.ui.data.remote.model.ResponseErrorMessage
-import by.ivan.CafeApp.ui.data.remote.util.ApiService
+import by.ivan.CafeApp.data.remote.model.OrderDetailsRemoteModel
+import by.ivan.CafeApp.data.remote.model.OrderRemoteModelList
+import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
+import by.ivan.CafeApp.data.remote.util.ApiService
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,8 +1,8 @@
 package by.ivan.CafeApp.domain.table.usecase
 
-import by.ivan.CafeApp.ui.data.repo.TableRepository
-import by.ivan.CafeApp.ui.domain.table.model.Table
-import by.ivan.CafeApp.ui.domain.table.model.toDomain
+import by.ivan.CafeApp.data.repo.TableRepository
+import by.ivan.CafeApp.domain.table.model.Table
+import by.ivan.CafeApp.domain.table.model.toDomain
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

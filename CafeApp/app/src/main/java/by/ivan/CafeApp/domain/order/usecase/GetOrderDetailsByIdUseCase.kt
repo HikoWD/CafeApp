@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.domain.order.usecase
 
-import by.ivan.CafeApp.ui.data.repo.OrderRepository
-import by.ivan.CafeApp.ui.domain.order.model.OrderDetails
+import by.ivan.CafeApp.data.repo.OrderRepository
+import by.ivan.CafeApp.domain.order.model.OrderDetails
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

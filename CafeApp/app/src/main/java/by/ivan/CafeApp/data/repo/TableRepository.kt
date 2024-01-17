@@ -1,13 +1,13 @@
 package by.ivan.CafeApp.data.repo
 
 import android.content.Context
-import by.ivan.CafeApp.ui.data.datasource.TableLocalDatasource
-import by.ivan.CafeApp.ui.data.datasource.TableRemoteDatasource
-import by.ivan.CafeApp.ui.data.local.entity.TableLocalModel
-import by.ivan.CafeApp.ui.data.local.entity.toLocalModel
-import by.ivan.CafeApp.ui.data.remote.model.ResponseErrorMessage
-import by.ivan.CafeApp.ui.data.remote.model.TableRemoteModelList
-import by.ivan.CafeApp.ui.domain.table.model.Table
+import by.ivan.CafeApp.data.datasource.TableLocalDatasource
+import by.ivan.CafeApp.data.datasource.TableRemoteDatasource
+import by.ivan.CafeApp.data.local.entity.TableLocalModel
+import by.ivan.CafeApp.data.local.entity.toLocalModel
+import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
+import by.ivan.CafeApp.data.remote.model.TableRemoteModelList
+import by.ivan.CafeApp.domain.table.model.Table
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow

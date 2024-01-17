@@ -1,12 +1,12 @@
 package by.ivan.CafeApp.data.repo
 
-import by.ivan.CafeApp.ui.data.datasource.CategoryLocalDatasource
-import by.ivan.CafeApp.ui.data.datasource.CategoryRemoteDatasource
-import by.ivan.CafeApp.ui.data.datasource.MenuItemLocalDatasource
-import by.ivan.CafeApp.ui.data.local.entity.CategoryLocalModel
-import by.ivan.CafeApp.ui.data.local.entity.toLocalModel
-import by.ivan.CafeApp.ui.data.remote.model.CategoryRemoteModelList
-import by.ivan.CafeApp.ui.data.remote.model.ResponseErrorMessage
+import by.ivan.CafeApp.data.datasource.CategoryLocalDatasource
+import by.ivan.CafeApp.data.datasource.CategoryRemoteDatasource
+import by.ivan.CafeApp.data.datasource.MenuItemLocalDatasource
+import by.ivan.CafeApp.data.local.entity.CategoryLocalModel
+import by.ivan.CafeApp.data.local.entity.toLocalModel
+import by.ivan.CafeApp.data.remote.model.CategoryRemoteModelList
+import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull

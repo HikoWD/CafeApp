@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace Cafe.Service.Models.Menu
 {
+    [DebuggerDisplay("{Title}")]
     public class MenuItem
     {
         public int Id { get; set; }
@@ -14,5 +16,20 @@ namespace Cafe.Service.Models.Menu
         public string Description { get; set; }
         public double Price { get; set; }
         public double Weight { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var other = obj as MenuItem;
+            if (other is null)
+            {
+                return false;
+            }
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }

@@ -1,0 +1,18 @@
+﻿@using Cafe.Service.Models.ProductAnalysis;
+@using Cafe.Service.Models.Shared;
+@model IEnumerable<ProductDetails>;
+
+<span>
+    Подробности
+</span>
+
+@foreach (var product in Model)
+{
+    <div>Категория: @product.Category.Title</div>
+    @foreach (var item in product.MenuItems)
+    {
+        <div>Продукт: @item.Key.Title</div>
+        <div>Количество: @item.Value</div>
+    }    
+    <br />
+}

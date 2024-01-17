@@ -1,7 +1,7 @@
 package by.ivan.CafeApp.data.datasource
 
-import by.ivan.CafeApp.ui.data.remote.model.TableVersionRemoteModelList
-import by.ivan.CafeApp.ui.data.remote.util.ApiService
+import by.ivan.CafeApp.data.remote.model.TableVersionRemoteModelList
+import by.ivan.CafeApp.data.remote.util.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

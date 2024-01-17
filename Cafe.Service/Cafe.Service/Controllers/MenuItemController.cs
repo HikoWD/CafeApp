@@ -1,8 +1,10 @@
-﻿using Cafe.Service.Models.Menu;
+﻿using Cafe.Service.Models.Authentication;
+using Cafe.Service.Models.Menu;
 using Cafe.Service.Models.Table;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace Cafe.Service.Controllers
 {
@@ -24,7 +26,7 @@ namespace Cafe.Service.Controllers
         }
 
         public ActionResult Index()
-        {
+        {            
             return View(_menuItemProvider.Get());
         }
 

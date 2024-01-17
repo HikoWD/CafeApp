@@ -1,0 +1,19 @@
+﻿@using Cafe.Service.Models.ProductAnalysis;
+@using Cafe.Service.Models.Shared;
+@model IEnumerable<MostPopularProduct>;
+
+<span>
+    Анализ
+</span>
+
+@foreach (var product in Model)
+{
+    <div>Категория: @product.Category.Title</div>
+    <div>Продукт: @product.MenuItem.Title</div>
+    <div>Количество: @product.Count</div>
+    <br />
+}
+
+<input type="button"
+       value="Подробнее"
+       onclick="location.href='@Url.Action("Details", "ProductAnalysis")'" />

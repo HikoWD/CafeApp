@@ -2,7 +2,7 @@ package by.ivan.CafeApp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import by.ivan.CafeApp.ui.data.remote.model.CategoryRemoteModelList
+import by.ivan.CafeApp.data.remote.model.CategoryRemoteModelList
 
 @Entity
 data class CategoryLocalModel(

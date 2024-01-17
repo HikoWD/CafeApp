@@ -3,7 +3,7 @@ package by.ivan.CafeApp.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import by.ivan.CafeApp.ui.data.remote.model.OrderRemoteModelList
+import by.ivan.CafeApp.data.remote.model.OrderRemoteModelList
 
 @Entity(foreignKeys = [
     ForeignKey(

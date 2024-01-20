@@ -27,6 +27,7 @@ fun OrderDetailsScreen(
     OrderDetailsScreen(
         viewModel = viewModel,
         navigator = navigator,
+        paddingValuesParent = paddingValuesParent,
         order = navArgs.order,
         onNavigateToHistoryOrdersScreenClick = { navigator.navigateUp() }
     )
@@ -36,6 +37,7 @@ fun OrderDetailsScreen(
 private fun OrderDetailsScreen(
     viewModel: OrderDetailsScreenViewModel,
     navigator: DestinationsNavigator,
+    paddingValuesParent: PaddingValues,
     order: Order? = Order(
         id = 1,
         orderDetails = OrderDetails(id = 1, menuItemsIdsText = ""),
@@ -52,12 +54,13 @@ private fun OrderDetailsScreen(
                 orderId = order?.id,
                 onNavigateToHistoryOrdersScreenClick = onNavigateToHistoryOrdersScreenClick
             )
-        }) { padding ->
+        }) { paddingValuesChild ->
         OrderDetailsMain(
             viewModel = viewModel,
             order = order,
             navigator = navigator,
-            paddingValuesChild = padding
+            paddingValuesParent = paddingValuesParent,
+            paddingValuesChild = paddingValuesChild
         )
     }
 }

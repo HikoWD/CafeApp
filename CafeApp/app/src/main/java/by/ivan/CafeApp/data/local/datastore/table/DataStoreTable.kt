@@ -1,4 +1,4 @@
-package by.ivan.CafeApp.data.local.datastore
+package by.ivan.CafeApp.data.local.datastore.table
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -21,7 +21,7 @@ class DataStoreTable @Inject constructor(
     private val editTableStateUseCase: EditTableStateUseCase
 ) {
     companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("Table")
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("table_data_model")
         val tableId = intPreferencesKey("tableId")
         val tableTitle = stringPreferencesKey("tableTitle")
     }

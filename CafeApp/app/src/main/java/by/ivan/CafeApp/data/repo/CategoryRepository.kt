@@ -21,7 +21,7 @@ class CategoryRepository @Inject constructor(
     private val menuItemLocalDatasource: MenuItemLocalDatasource
 ) {
     suspend fun getLocalCategories(): Flow<List<CategoryLocalModel>> {
-        return categoryLocalDatasource.getCategories()
+        return categoryLocalDatasource.getAll()
     }
 
     suspend fun searchNewCategory(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage> {
@@ -54,7 +54,7 @@ class CategoryRepository @Inject constructor(
                 it.toLocalModel()
             }
 
-            val categoriesFromDb = categoryLocalDatasource.getCategories().firstOrNull()
+            val categoriesFromDb = categoryLocalDatasource.getAll().firstOrNull()
             if (categoriesFromDb?.count() != categoriesLocal.count()) {
                 categoriesFromDb?.forEach {
                     if (!categoriesLocal.contains(it)) {

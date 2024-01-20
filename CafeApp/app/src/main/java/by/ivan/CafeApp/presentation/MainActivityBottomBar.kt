@@ -2,19 +2,18 @@ package by.ivan.CafeApp.presentation
 
 import android.support.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,43 +22,52 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import by.ivan.CafeApp.R
 import com.ramcosta.composedestinations.navigation.navigate
 
-//sealed class BottomNavItem(
-//    val direction: DirectionDestination,
-//    val icon: ImageVector,
-//    @StringRes val label: Int
-//) {
-//    object MenuItems : BottomNavItem(
-//        direction = MenuItemsScreenDestination,
-//        icon = Icons.Default.Home,
-//        label = R.string.menuItems_screen
-//    )
-
 sealed class BottomNavItem(
     val graph: NavGraph,
-    val icon: ImageVector,
+    val icon: @Composable () -> Unit, //ImageVector
     @StringRes val label: Int
 ) {
     object MenuItems : BottomNavItem(
         graph = NavGraphs.menu,
-        icon = Icons.Default.Home,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Home,
+                contentDescription = "Home icon"
+            )
+        },
         label = R.string.menuItems_screen
     )
 
     object SearchItems : BottomNavItem(
         graph = NavGraphs.search,
-        icon = Icons.Default.Search,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search icon"
+            )
+        },
         label = R.string.searchItems_screen
     )
 
     object Cart : BottomNavItem(
         graph = NavGraphs.cart,
-        icon = Icons.Default.ShoppingCart,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.ShoppingCart,
+                contentDescription = "ShoppingCart icon"
+            )
+        },
         label = R.string.cart_screen
     )
 
     object OrderDetails : BottomNavItem(
         graph = NavGraphs.history,
-        icon = Icons.Default.Info, //todo
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_history_24),
+                contentDescription = "History icon"
+            )
+        },
         label = R.string.historyOrders_screen
     )
 }
@@ -89,13 +97,13 @@ private fun MainActivityBottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation(modifier = Modifier.fillMaxWidth()) {
+    NavigationBar(modifier = Modifier.fillMaxWidth()) {//BottomNavigation
         items.forEach { destination ->
 
             val isCurrentDestination =
                 currentDestination?.hierarchy?.any { it.route == destination.graph.route } == true
 
-            BottomNavigationItem(
+            NavigationBarItem( //BottomNavigationItem
                 selected = isCurrentDestination,
                 onClick = {
                     navController.navigate(destination.graph) {
@@ -112,12 +120,7 @@ private fun MainActivityBottomBar(
                         // on the back stack as users select items
                     }
                 },
-                icon = {
-                    Icon(
-                        destination.icon,
-                        contentDescription = stringResource(destination.label)
-                    )
-                },
+                icon = destination.icon,
                 label = { Text(stringResource(destination.label)) },
             )
         }

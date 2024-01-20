@@ -15,7 +15,8 @@ import by.ivan.CafeApp.data.local.other.Converters
         OrderLocalModel::class,
         TableLocalModel::class,
         TableVersionLocalModel::class,
-        CartItemLocalModel::class],
+        CartItemLocalModel::class,
+        SearchHistoryItemLocalModel::class],
     version = 1
 )
 @TypeConverters(Converters::class) //todo
@@ -25,5 +26,6 @@ abstract class CafeDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
     abstract fun tableDao(): TableDao
     abstract fun tableVersionDao(): TableVersionDao
-    abstract fun cartItemDao(): CartItemDao
+    abstract fun cartItemDao(): CartDao
+    abstract fun searchHistoryDao(): SearchHistoryDao
 }

@@ -1,8 +1,10 @@
 package by.ivan.CafeApp.presentation.order_details_screen.main
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,10 +12,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -21,10 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.order.model.Order
@@ -37,6 +38,7 @@ fun OrderDetailsMain(
     viewModel: OrderDetailsScreenViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
     order: Order?,
+    paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -49,7 +51,8 @@ fun OrderDetailsMain(
 
     OrderDetailsMain(
         viewModel = viewModel,
-        navigator = navigator,
+        paddingValuesParent = paddingValuesParent,
+        paddingValuesChild = paddingValuesChild,
         menuItems = state.menuItems
     )
 }
@@ -57,10 +60,15 @@ fun OrderDetailsMain(
 @Composable
 private fun OrderDetailsMain(
     viewModel: OrderDetailsScreenViewModel,
-    navigator: DestinationsNavigator,
+    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
+    paddingValuesChild: PaddingValues = PaddingValues(2.dp),
     menuItems: List<MenuItem>
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = paddingValuesParent.calculateBottomPadding())
+    ) {
         LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 250.dp)) {
             itemsIndexed(items = menuItems) { index, item ->
                 Card(
@@ -68,13 +76,18 @@ private fun OrderDetailsMain(
                         .fillMaxSize()
                         .padding(horizontal = 20.dp, vertical = 5.dp)
                         .shadow(
-                            elevation = 5.dp,
+                            elevation = 10.dp,
                             clip = true,
-                            shape = RoundedCornerShape(5.dp)
+                            shape = RoundedCornerShape(20.dp)
                         ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(20.dp),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 10.dp
                     ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                    border = BorderStroke(1.dp, Color.Black),
                 ) {
                     Column(
                         modifier = Modifier,
@@ -85,9 +98,8 @@ private fun OrderDetailsMain(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             text = item.title,
-//                            style = MaterialTheme.typography.titleLarge
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Black,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Center
                         )
                         AsyncImage(
@@ -95,45 +107,52 @@ private fun OrderDetailsMain(
                             contentDescription = "product picture",
                             modifier = Modifier.fillMaxSize()
                         )
-                        Text(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = 2.dp,
+                                    start = 6.dp,
                                     top = 4.dp,
-                                    end = 2.dp,
-                                    bottom = 4.dp
+                                    end = 4.dp,
+                                    bottom = 6.dp
                                 ),
-                            text = item.price.toString(),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Black,
-                            textAlign = TextAlign.Left,
-                        )
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "${item.price} р",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = 2.dp,
+                                    start = 6.dp,
                                     top = 4.dp,
-                                    end = 2.dp,
-                                    bottom = 4.dp
+                                    end = 4.dp,
+                                    bottom = 6.dp
                                 ),
                             text = "${item.weight} кг",
-                            textAlign = TextAlign.Left,
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Left
                         )
+
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = 2.dp,
+                                    start = 6.dp,
                                     top = 4.dp,
-                                    end = 2.dp,
-                                    bottom = 4.dp
+                                    end = 4.dp,
+                                    bottom = 6.dp
                                 ),
                             text = item.description,
                             textAlign = TextAlign.Left,
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }

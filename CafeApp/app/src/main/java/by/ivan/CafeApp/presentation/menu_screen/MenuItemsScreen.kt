@@ -19,7 +19,6 @@ import by.ivan.CafeApp.presentation.menu_screen.drawer.MenuItemsScreenDrawer
 import by.ivan.CafeApp.presentation.menu_screen.main.MenuItemsMain
 import by.ivan.CafeApp.presentation.menu_screen.top_bar.MenuItemsTopBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @MenuNavGraph(start = true)
@@ -28,12 +27,7 @@ import kotlinx.coroutines.launch
 fun MenuItemsScreen(
     viewModel: MenuItemsScreenViewModel = hiltViewModel(),
     chooseTableDialogViewModel: ChooseTableDialogViewModel = hiltViewModel(),
-    navigator: DestinationsNavigator,
     paddingValuesParent: PaddingValues,
-//    onGetMenuItemsByCategoryIdClick: (categoryId: Int) -> Unit,
-//    onGetMenuItemsSortedByAlphabetClick: (categoryId: Int) -> Unit,
-//    onGetMenuItemsSortedByPriceClick: (categoryId: Int) -> Unit,
-//    onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
 

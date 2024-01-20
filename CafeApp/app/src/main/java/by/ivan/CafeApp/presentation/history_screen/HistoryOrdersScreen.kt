@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import by.ivan.CafeApp.domain.order.model.Order
 import by.ivan.CafeApp.presentation.HistoryNavGraph
@@ -24,7 +25,7 @@ fun HistoryOrdersScreen(
     navigator: DestinationsNavigator,
     paddingValuesParent: PaddingValues
 ) {
-    DisposableEffect(Unit){
+    DisposableEffect(Unit) {
         val job = viewModel.getOrders()
 
         onDispose {
@@ -32,12 +33,13 @@ fun HistoryOrdersScreen(
         }
     }
 
-    SideEffect{
+    SideEffect {
         viewModel.searchNewOrder()
     }
 
     HistoryOrdersScreen(
         viewModel = viewModel,
+        paddingValuesParent = paddingValuesParent,
         onNavigateToOrderDetailsScreenClick = {
             navigator.navigate(
                 OrderDetailsScreenDestination(it)
@@ -49,15 +51,19 @@ fun HistoryOrdersScreen(
 @Composable
 private fun HistoryOrdersScreen(
     viewModel: HistoryOrdersScreenViewModel,
+    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onNavigateToOrderDetailsScreenClick: (Order) -> Unit = {},
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { HistoryOrdersTopBar(viewModel = viewModel) }) {
-        print(it)
-        HistoryOrdersMain(
-            viewModel = viewModel,
-            onNavigateToOrderDetailsScreenClick = onNavigateToOrderDetailsScreenClick,
-        )
-    }
+        topBar = { HistoryOrdersTopBar(viewModel = viewModel) },
+        content = { paddingValuesChild ->
+            HistoryOrdersMain(
+                viewModel = viewModel,
+                paddingValuesParent = paddingValuesParent,
+                paddingValuesChild = paddingValuesChild,
+                onNavigateToOrderDetailsScreenClick = onNavigateToOrderDetailsScreenClick,
+            )
+        }
+    )
 }

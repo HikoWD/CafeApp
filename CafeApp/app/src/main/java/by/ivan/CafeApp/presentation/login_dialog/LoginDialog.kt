@@ -1,22 +1,20 @@
 package by.ivan.CafeApp.presentation.login_dialog
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,16 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import by.ivan.CafeApp.presentation.menu_screen.MenuItemsScreenViewModel
 
-//@MenuNavGraph
-//@Destination
 @Composable
 fun LoginDialog(
     viewModel: MenuItemsScreenViewModel = hiltViewModel(),
@@ -75,38 +69,30 @@ private fun LoginDialog(
             dismissOnBackPress = true
         ),
     ) {
-        Card(modifier = Modifier.size(height = 210.dp, width = 250.dp)) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(220.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        modifier = Modifier.weight(1f),
-                        text = "Вход",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Black,
-                        textAlign = TextAlign.Center
-                    )
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        IconButton(onClick = {
-                            //navigator.navigate(NavGraphs.root)
-                            onDismissRequest()
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = "Close dialog",
-                                tint = Color.Black
-                            )
-                        }
-                    }
-                }
-                Text(text = "PIN", textAlign = TextAlign.Left)
+                Text(
+                    text = "Вход",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Black,
+                )
+                Text(
+                    text = "PIN",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
                 TextField(
                     value = text.value,
                     onValueChange = { text.value = it },
@@ -115,25 +101,56 @@ private fun LoginDialog(
                     visualTransformation =
                     if (passwordVisible.value) VisualTransformation.None
                     else PasswordVisualTransformation(),
-                    placeholder = { Text(text = "Введите PIN") },
+                    placeholder = {
+                        Text(
+                            text = "Введите PIN",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
                 )
                 if (isVisibleErrorText.value) {
-                    Text(text = "Не правильный код", color = Color.Red)
+                    Text(
+                        text = "Не правильный код",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Red
+                    )
                 }
-                Button(onClick = {
-                    if (text.value.isNotEmpty() && pin == text.value.toInt()) {
-                        onDismissRequest()
-                        showChooseTableDialogClick()
-                        //navigator.navigate(ChooseTableDialogDestination())
-                        isVisibleErrorText.value = false
-                    } else {
-                        isVisibleErrorText.value = true
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.onPrimary,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
+                        onClick = { onDismissRequest() },
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Text("Отмена", style = MaterialTheme.typography.bodyMedium)
                     }
-                }) {
-                    Text(text = "Подтвердить", textAlign = TextAlign.Left)
+                    TextButton(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.onPrimary,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
+                        onClick = {
+                            //onConfirmation
+                            if (text.value.isNotEmpty() && pin == text.value.toInt()) {
+                                onDismissRequest()
+                                showChooseTableDialogClick()
+                                isVisibleErrorText.value = false
+                            } else {
+                                isVisibleErrorText.value = true
+                            }
+                        },
+                        modifier = Modifier.padding(8.dp),
+                    ) {
+                        Text("Подтвердить", style = MaterialTheme.typography.bodyMedium)
+                    }
                 }
             }
         }
-
     }
 }

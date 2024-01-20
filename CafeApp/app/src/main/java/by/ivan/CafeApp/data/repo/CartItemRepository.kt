@@ -2,7 +2,7 @@ package by.ivan.CafeApp.data.repo
 
 import by.ivan.CafeApp.data.datasource.CartItemLocalDatasource
 import by.ivan.CafeApp.data.datasource.CartItemRemoteDatasource
-import by.ivan.CafeApp.data.local.datastore.DataStoreTable
+import by.ivan.CafeApp.data.local.datastore.table.DataStoreTable
 import by.ivan.CafeApp.data.local.entity.CartItemLocalModel
 import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
 import by.ivan.CafeApp.domain.cart.model.CartItem

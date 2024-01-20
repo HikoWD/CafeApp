@@ -1,6 +1,5 @@
 package by.ivan.CafeApp.presentation.chooseTable_dialog
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.ivan.CafeApp.domain.result.CompletableResult
@@ -72,9 +71,5 @@ class ChooseTableDialogViewModel @Inject constructor(
         viewModelScope.launch {
             saveTableUseCase(table = table)
         }
-    }
-
-    init {
-        Log.d("3333333333", "chooseInit")
     }
 }

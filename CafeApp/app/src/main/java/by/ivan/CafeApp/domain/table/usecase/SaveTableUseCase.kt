@@ -1,6 +1,6 @@
 package by.ivan.CafeApp.domain.table.usecase
 
-import by.ivan.CafeApp.data.local.datastore.DataStoreTable
+import by.ivan.CafeApp.data.local.datastore.table.DataStoreTable
 import by.ivan.CafeApp.domain.table.model.Table
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers

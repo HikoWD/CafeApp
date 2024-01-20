@@ -46,8 +46,14 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideCartItem(db: CafeDatabase): CartItemDao {
+    fun provideCartItem(db: CafeDatabase): CartDao {
         return db.cartItemDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchHistory(db: CafeDatabase): SearchHistoryDao {
+        return db.searchHistoryDao()
     }
 
     @Provides

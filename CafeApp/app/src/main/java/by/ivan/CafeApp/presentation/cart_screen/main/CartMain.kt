@@ -1,6 +1,5 @@
 package by.ivan.CafeApp.presentation.cart_screen.main
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
@@ -29,14 +28,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -58,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import by.ivan.CafeApp.R
+import by.ivan.CafeApp.data.Constants
 import by.ivan.CafeApp.domain.cart.model.CartItem
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.order.model.Order
@@ -92,11 +95,6 @@ fun CartMain(
             job.cancel()
         }
     }
-
-//    LaunchedEffect(state) {
-//        onGetCartItemsEffect()
-//    }
-
 
     Crossfade(
         targetState = state.value.orderPostState,
@@ -199,7 +197,15 @@ private fun CartMain(
                     Card(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 5.dp, vertical = 5.dp)
+                            .padding(horizontal = 5.dp, vertical = 5.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 10.dp
+                        ),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                        ),
+                        border = BorderStroke(0.5.dp, Color.Black),
                     ) {
                         Column(
                             modifier = Modifier
@@ -215,7 +221,7 @@ private fun CartMain(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 AsyncImage(
-                                    model = "${by.ivan.CafeApp.data.Constants.URL}/${item.menuItem.image}",
+                                    model = "${Constants.URL}/${item.menuItem.image}",
                                     contentDescription = "product picture",
                                     modifier = Modifier
                                         .height(70.dp)
@@ -314,8 +320,14 @@ private fun CartMain(
                     clip = true,
                     shape = RectangleShape
                 ),
+            shape = RoundedCornerShape(0.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 0.dp
+            ),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+            ),
             border = BorderStroke(0.dp, Color.LightGray),
-            backgroundColor = Color.White
         ) {
             Box(
                 modifier = Modifier

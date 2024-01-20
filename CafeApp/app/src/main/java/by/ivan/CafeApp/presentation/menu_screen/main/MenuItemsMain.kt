@@ -22,20 +22,20 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -91,7 +91,7 @@ private fun MenuItemsMain(
                 .weight(1f)
                 .fillMaxWidth(),
             animationSpec = tween(
-                durationMillis = 800,
+                durationMillis = 400,
                 easing = LinearEasing
             ),
             label = ""
@@ -112,14 +112,18 @@ private fun MenuItemsMain(
                     Toast.makeText(localContext, "${state.errorMessage}", Toast.LENGTH_LONG).show()
                     DrawCategories(
                         categories = categories,
-                        onGetMenuItemsByCategoryIdClick = onGetMenuItemsByCategoryIdClick
+                        onGetMenuItemsByCategoryIdClick = onGetMenuItemsByCategoryIdClick,
+                        paddingValuesParent = paddingValuesParent,
+                        paddingValuesChild = paddingValuesChild
                     )
                 }
 
                 is CategoriesScreenState.Loaded -> {
                     DrawCategories(
                         categories = categories,
-                        onGetMenuItemsByCategoryIdClick = onGetMenuItemsByCategoryIdClick
+                        onGetMenuItemsByCategoryIdClick = onGetMenuItemsByCategoryIdClick,
+                        paddingValuesParent = paddingValuesParent,
+                        paddingValuesChild = paddingValuesChild
                     )
                 }
 
@@ -136,7 +140,6 @@ private fun MenuItemsMain(
                 .fillMaxWidth(),
             animationSpec = tween(
                 durationMillis = 400,
-                //delayMillis = 100, //todo
                 easing = FastOutSlowInEasing
             ),
             label = ""
@@ -157,7 +160,8 @@ private fun MenuItemsMain(
                     DrawMenuItems(
                         menuItems = menuItems,
                         onAddMenuItemToCartClick = onAddMenuItemToCartClick,
-                        padding = paddingValuesChild
+                        paddingValuesParent = paddingValuesParent,
+                        paddingValuesChild = paddingValuesChild
                     )
                 }
 
@@ -165,7 +169,8 @@ private fun MenuItemsMain(
                     DrawMenuItems(
                         menuItems = menuItems,
                         onAddMenuItemToCartClick = onAddMenuItemToCartClick,
-                        padding = paddingValuesChild
+                        paddingValuesParent = paddingValuesParent,
+                        paddingValuesChild = paddingValuesChild
                     )
                 }
 
@@ -186,12 +191,13 @@ private fun MenuItemsMain(
 @Composable
 private fun DrawCategories(
     categories: List<Category>,
-    onGetMenuItemsByCategoryIdClick: (categoryId: Int) -> Unit
+    onGetMenuItemsByCategoryIdClick: (categoryId: Int) -> Unit,
+    paddingValuesParent: PaddingValues,
+    paddingValuesChild: PaddingValues
 ) {
     LazyRow(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(),
+            .fillMaxWidth()
     ) {
         itemsIndexed(items = categories) { index, item ->
             Box(
@@ -199,7 +205,7 @@ private fun DrawCategories(
                     .fillMaxWidth()
                     .padding(4.dp)
             ) {
-                Button(modifier = Modifier
+                OutlinedButton(modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                     border = BorderStroke(1.dp, Color.Black),
@@ -224,13 +230,14 @@ private fun DrawCategories(
 private fun DrawMenuItems(
     menuItems: List<MenuItem>,
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit,
-    padding: PaddingValues
+    paddingValuesParent: PaddingValues,
+    paddingValuesChild: PaddingValues
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 420.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues = padding)
+            .padding(bottom = paddingValuesParent.calculateBottomPadding())
     ) {
         itemsIndexed(items = menuItems) { index, item ->
             Card(
@@ -238,13 +245,18 @@ private fun DrawMenuItems(
                     .fillMaxSize()
                     .padding(horizontal = 20.dp, vertical = 5.dp)
                     .shadow(
-                        elevation = 5.dp,
+                        elevation = 10.dp,
                         clip = true,
-                        shape = RoundedCornerShape(5.dp)
+                        shape = RoundedCornerShape(20.dp)
                     ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 10.dp
                 ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+                border = BorderStroke(1.dp, Color.Black),
             ) {
                 Column(
                     modifier = Modifier,
@@ -255,8 +267,8 @@ private fun DrawMenuItems(
                         modifier = Modifier
                             .fillMaxWidth(),
                         text = item.title,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Black,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Center
                     )
                     AsyncImage(
@@ -268,27 +280,27 @@ private fun DrawMenuItems(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 2.dp,
+                                start = 6.dp,
                                 top = 4.dp,
-                                end = 2.dp,
-                                bottom = 4.dp
+                                end = 4.dp,
+                                bottom = 6.dp
                             ),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = "${item.price} р",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Black
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
-                        Button(colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray),
+                        FilledTonalButton(
                             onClick = {
                                 onAddMenuItemToCartClick(item)
                             }) {
                             Text(
                                 text = "В корзину",
-                                fontSize = 16.sp,
-                                color = Color.Black,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         }
                     }
@@ -296,13 +308,14 @@ private fun DrawMenuItems(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 2.dp,
+                                start = 6.dp,
                                 top = 4.dp,
-                                end = 2.dp,
-                                bottom = 4.dp
+                                end = 4.dp,
+                                bottom = 6.dp
                             ),
                         text = "${item.weight} кг",
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Left
                     )
 
@@ -310,14 +323,15 @@ private fun DrawMenuItems(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 2.dp,
+                                start = 6.dp,
                                 top = 4.dp,
-                                end = 2.dp,
-                                bottom = 4.dp
+                                end = 4.dp,
+                                bottom = 6.dp
                             ),
                         text = item.description,
                         textAlign = TextAlign.Left,
-                        fontSize = 16.sp
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }

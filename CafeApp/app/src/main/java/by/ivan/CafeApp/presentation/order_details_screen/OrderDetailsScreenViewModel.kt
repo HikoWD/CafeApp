@@ -21,7 +21,6 @@ class OrderDetailsScreenViewModel @Inject constructor(
     fun getMenuItemsByOrderItemsIds(order: Order) {
         viewModelScope.launch {
             val menuItems = getMenuItemsByOrderItemsIdsUseCase(order = order)
-
             _uiState.update {
                 it.copy(menuItems = menuItems)
             }

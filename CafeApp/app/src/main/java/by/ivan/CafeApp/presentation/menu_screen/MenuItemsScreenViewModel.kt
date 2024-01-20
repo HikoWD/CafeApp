@@ -17,7 +17,6 @@ import by.ivan.CafeApp.domain.table.usecase.SaveTableUseCase
 import by.ivan.CafeApp.domain.table.usecase.SearchNewTablesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -51,8 +50,6 @@ class MenuItemsScreenViewModel @Inject constructor(
                     _uiState.value = _uiState.value.copy(
                         categoriesScreenState = CategoriesScreenState.Error(errorMessage = result.errorMessage)
                     )
-//                    delay(15000L)
-//                    searchNewCategory() //todo
                 }
 
                 is CompletableResult.Success -> {
@@ -77,8 +74,6 @@ class MenuItemsScreenViewModel @Inject constructor(
                     _uiState.value = _uiState.value.copy(
                         menuItemsScreenState = MenuItemsScreenState.Error(errorMessage = result.errorMessage),
                     )
-//                    delay(15000L)
-//                    searchNewMenuItem() //todo
                 }
 
                 is CompletableResult.Success -> {
@@ -113,9 +108,6 @@ class MenuItemsScreenViewModel @Inject constructor(
 
     fun getMenuItemsByCategoryId(categoryId: Int): Job {
         return viewModelScope.launch {
-            _uiState.value =
-                _uiState.value.copy(menuItemsScreenState = MenuItemsScreenState.Idle)
-            delay(200L)
             searchNewMenuItem().join()
             getMenuItemsByCategoryIdUseCase(categoryId = categoryId).collect { menuItems ->
                 _uiState.value = _uiState.value.copy(

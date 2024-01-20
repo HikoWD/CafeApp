@@ -2,7 +2,6 @@ package by.ivan.CafeApp.presentation.history_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import by.ivan.CafeApp.domain.order.usecase.GetOrdersByTableUseCase
 import by.ivan.CafeApp.domain.order.usecase.GetOrdersUseCase
 import by.ivan.CafeApp.domain.order.usecase.SearchNewOrdersUseCase
 import by.ivan.CafeApp.domain.result.CompletableResult
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class HistoryOrdersScreenViewModel @Inject constructor(
     private val getOrdersUseCase: GetOrdersUseCase,
     private val searchNewOrdersUseCase: SearchNewOrdersUseCase,
-    private val getOrdersByTableUseCase: GetOrdersByTableUseCase,
     private val getCurrentTableUseCase: GetCurrentTableUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HistoryOrdersScreenUiState())
@@ -52,8 +50,6 @@ class HistoryOrdersScreenViewModel @Inject constructor(
                         _uiState.value = _uiState.value.copy(
                             historyOrdersScreenState = HistoryOrdersScreenState.Error(errorMessage = result.errorMessage)
                         )
-//                        delay(5000L)
-//                        searchNewOrder()
                     }
 
                     else -> {}

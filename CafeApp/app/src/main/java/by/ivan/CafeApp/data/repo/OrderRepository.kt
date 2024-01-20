@@ -7,7 +7,6 @@ import by.ivan.CafeApp.data.local.entity.OrderLocalModel
 import by.ivan.CafeApp.data.local.entity.toLocalModel
 import by.ivan.CafeApp.data.remote.model.OrderRemoteModelList
 import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
-import by.ivan.CafeApp.domain.order.model.Order
 import by.ivan.CafeApp.domain.order.model.OrderDetails
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,10 +22,6 @@ class OrderRepository @Inject constructor(
 ) {
     suspend fun getOrders(): Flow<List<OrderLocalModel>> {
         return orderLocalDatasource.getAll()
-    }
-
-    suspend fun insert(order: Order) {
-
     }
 
     suspend fun searchNewOrder(tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage> {

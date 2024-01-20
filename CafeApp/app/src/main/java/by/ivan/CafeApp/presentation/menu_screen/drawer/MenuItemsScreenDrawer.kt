@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -87,7 +87,6 @@ private fun MenuItemsScreenDrawer(
                 onClick = {
                     onDrawerCloseSwipe()
                     showLoginDialogClick()
-                    // navigator.navigate(LoginDialogDestination())
                 }) {
                 Text(text = "Login", fontSize = 24.sp)
             }

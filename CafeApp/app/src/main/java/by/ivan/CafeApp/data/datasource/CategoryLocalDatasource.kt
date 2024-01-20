@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CategoryLocalDatasource @Inject constructor(private val categoryDao: CategoryDao) {
-    suspend fun getCategories(): Flow<List<CategoryLocalModel>> = withContext(Dispatchers.IO){
+    suspend fun getAll(): Flow<List<CategoryLocalModel>> = withContext(Dispatchers.IO){
         return@withContext categoryDao.observeAll()
     }
 

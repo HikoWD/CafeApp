@@ -9,7 +9,7 @@ import by.ivan.CafeApp.data.local.entity.CartItemLocalModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CartItemDao {
+interface CartDao {
     @Query("SELECT * FROM CartItemLocalModel")
     fun observeAll(): Flow<List<CartItemLocalModel>>
 

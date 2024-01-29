@@ -5,11 +5,10 @@ import androidx.lifecycle.viewModelScope
 import by.ivan.CafeApp.domain.cart.usecase.AddMenuItemToCartUseCase
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.menu.usecase.GetMenuItemsByTitleUseCase
-import by.ivan.CafeApp.domain.search_history.AddSearchHistoryItemUseCase
-import by.ivan.CafeApp.domain.search_history.GetAllSearchHistoryItemsUseCase
 import by.ivan.CafeApp.domain.search_history.model.SearchHistoryItem
+import by.ivan.CafeApp.domain.search_history.usecase.AddSearchHistoryItemUseCase
+import by.ivan.CafeApp.domain.search_history.usecase.GetAllSearchHistoryItemsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -26,6 +25,10 @@ class SearchItemsScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SearchItemsScreenUiState())
     val uiState: StateFlow<SearchItemsScreenUiState> = _uiState
 
+    init {
+        getAllSearchHistoryItems()
+    }
+
     fun getMenuItemsByTitle() {
         viewModelScope.launch {
             getMenuItemsByTitleUseCase(title = _uiState.value.menuItemTitleForSearch).collect { menuItems ->
@@ -36,18 +39,18 @@ class SearchItemsScreenViewModel @Inject constructor(
         }
     }
 
-    fun getAllSearchHistoryItems(): Job{
-        return viewModelScope.launch {
-           getAllSearchHistoryItemsUseCase().collect{ items ->
-               _uiState.update {
-                   it.copy(searchHistory = items)
-               }
-           }
+    fun getAllSearchHistoryItems() {
+        viewModelScope.launch {
+            getAllSearchHistoryItemsUseCase().collect { items ->
+                _uiState.update {
+                    it.copy(searchHistoryItems = items)
+                }
+            }
         }
     }
 
-    fun addSearchHistoryItem(item: SearchHistoryItem){
-        viewModelScope.launch{
+    fun addSearchHistoryItem(item: SearchHistoryItem) {
+        viewModelScope.launch {
             addSearchHistoryItemUseCase(searchHistoryItem = item)
         }
     }
@@ -74,7 +77,7 @@ class SearchItemsScreenViewModel @Inject constructor(
         }
     }
 
-    fun clearMenuItems(){
+    fun clearMenuItems() {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(menuItems = listOf())

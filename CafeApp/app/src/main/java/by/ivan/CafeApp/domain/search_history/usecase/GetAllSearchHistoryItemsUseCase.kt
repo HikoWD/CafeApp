@@ -1,4 +1,4 @@
-package by.ivan.CafeApp.domain.search_history
+package by.ivan.CafeApp.domain.search_history.usecase
 
 import by.ivan.CafeApp.data.repo.SearchHistoryRepository
 import by.ivan.CafeApp.domain.search_history.model.SearchHistoryItem
@@ -13,8 +13,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class GetAllSearchHistoryItemsUseCase @Inject constructor(private val searchHistoryRepository: SearchHistoryRepository) {
     suspend operator fun invoke(): Flow<List<SearchHistoryItem>> = withContext(Dispatchers.IO) {
-        return@withContext searchHistoryRepository.getAll().map { items ->
-            items.map {
+        return@withContext searchHistoryRepository.getAll().map { searchHistoryItemsLocalModel ->
+            searchHistoryItemsLocalModel.map {
                 it.toDomain()
             }
         }

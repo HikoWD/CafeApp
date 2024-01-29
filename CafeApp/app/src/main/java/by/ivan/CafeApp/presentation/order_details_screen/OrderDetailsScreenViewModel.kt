@@ -18,11 +18,29 @@ class OrderDetailsScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OrderDetailsScreenUiState())
     val uiState: StateFlow<OrderDetailsScreenUiState> = _uiState
 
-    fun getMenuItemsByOrderItemsIds(order: Order) {
+    fun getMenuItemsByOrderItemsId(order: Order) {
         viewModelScope.launch {
-            val menuItems = getMenuItemsByOrderItemsIdsUseCase(order = order)
-            _uiState.update {
-                it.copy(menuItems = menuItems)
+            _uiState.value = _uiState.value.copy(
+                orderDetailsScreenState = OrderDetailsScreenState.Loading
+            )
+
+            getMenuItemsByOrderItemsIdsUseCase(order = order).collect { menuItems ->
+                when {
+                    menuItems.isEmpty() -> {
+                        _uiState.update {
+                            it.copy(orderDetailsScreenState = OrderDetailsScreenState.Empty)
+                        }
+                    }
+
+                    else -> {
+                        _uiState.update {
+                            it.copy(
+                                menuItems = menuItems,
+                                orderDetailsScreenState = OrderDetailsScreenState.Loaded
+                            )
+                        }
+                    }
+                }
             }
         }
     }

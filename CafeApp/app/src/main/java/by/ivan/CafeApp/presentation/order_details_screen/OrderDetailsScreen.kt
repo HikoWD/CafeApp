@@ -2,12 +2,20 @@ package by.ivan.CafeApp.presentation.order_details_screen
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.order.model.Order
-import by.ivan.CafeApp.domain.order.model.OrderDetails
 import by.ivan.CafeApp.presentation.HistoryNavGraph
 import by.ivan.CafeApp.presentation.order_details_screen.args.OrderDetailsScreenNavArgs
 import by.ivan.CafeApp.presentation.order_details_screen.main.OrderDetailsMain
@@ -20,13 +28,38 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun OrderDetailsScreen(
     viewModel: OrderDetailsScreenViewModel = hiltViewModel(),
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     navigator: DestinationsNavigator,
     navArgs: OrderDetailsScreenNavArgs,
     paddingValuesParent: PaddingValues,
 ) {
+    val state by viewModel.uiState.collectAsState()
+
+    // If `lifecycleOwner` changes, dispose and reset the effect
+    DisposableEffect(lifecycleOwner) {
+        // Create an observer that triggers our remembered callbacks
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                navArgs.order?.let { order ->
+                    viewModel.getMenuItemsByOrderItemsId(
+                        order = order
+                    )
+                }
+            }
+        }
+
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // When the effect leaves the Composition, remove the observer
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     OrderDetailsScreen(
         viewModel = viewModel,
-        navigator = navigator,
+        menuItems = state.menuItems,
         paddingValuesParent = paddingValuesParent,
         order = navArgs.order,
         onNavigateToHistoryOrdersScreenClick = { navigator.navigateUp() }
@@ -36,14 +69,9 @@ fun OrderDetailsScreen(
 @Composable
 private fun OrderDetailsScreen(
     viewModel: OrderDetailsScreenViewModel,
-    navigator: DestinationsNavigator,
-    paddingValuesParent: PaddingValues,
-    order: Order? = Order(
-        id = 1,
-        orderDetails = OrderDetails(id = 1, menuItemsIdsText = ""),
-        tableId = 1,
-        timestamp = ""
-    ),
+    menuItems: List<MenuItem> = listOf(),
+    order: Order? = Order(),
+    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onNavigateToHistoryOrdersScreenClick: () -> Unit = {},
 ) {
     Scaffold(
@@ -54,13 +82,14 @@ private fun OrderDetailsScreen(
                 orderId = order?.id,
                 onNavigateToHistoryOrdersScreenClick = onNavigateToHistoryOrdersScreenClick
             )
-        }) { paddingValuesChild ->
-        OrderDetailsMain(
-            viewModel = viewModel,
-            order = order,
-            navigator = navigator,
-            paddingValuesParent = paddingValuesParent,
-            paddingValuesChild = paddingValuesChild
-        )
-    }
+        },
+        content = { paddingValuesChild ->
+            OrderDetailsMain(
+                viewModel = viewModel,
+                menuItems = menuItems,
+                paddingValuesParent = paddingValuesParent,
+                paddingValuesChild = paddingValuesChild
+            )
+        }
+    )
 }

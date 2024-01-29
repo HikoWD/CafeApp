@@ -1,16 +1,16 @@
 package by.ivan.CafeApp.presentation.search_screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.search_history.model.SearchHistoryItem
 import by.ivan.CafeApp.presentation.SearchNavGraph
@@ -24,50 +24,43 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun SearchItemsScreen(
     viewModel: SearchItemsScreenViewModel = hiltViewModel(),
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     navigator: DestinationsNavigator,
     paddingValuesParent: PaddingValues,
+    onMenuButtonClick: () -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
-
-    DisposableEffect(Unit) {
-        val job = viewModel.getAllSearchHistoryItems()
-
-        Log.d("3333333333", "${state.searchHistory}")
-        onDispose {
-            job.cancel()
-        }
-    }
 
     SearchItemsScreen(
         viewModel = viewModel,
         menuItems = state.menuItems,
-        searchHistory = state.searchHistory,
         paddingValuesParent = paddingValuesParent,
+        searchHistoryItems = state.searchHistoryItems,
         menuItemTitleForSearch = state.menuItemTitleForSearch,
         onClearMenuItemsClick = { viewModel.clearMenuItems() },
         onGetMenuItemsByTitleUpdate = { viewModel.getMenuItemsByTitle() },
         onUpdateMenuItemTitleInput = { viewModel.updateMenuItemTitleForSearch(it) },
         onClearMenuItemTitleForSearchClick = { viewModel.clearMenuItemTitleForSearch() },
-        onPopBackStackClick = { navigator.popBackStack() },
         onAddMenuItemToCartClick = { viewModel.addMenuItemToCart(menuItem = it) },
-        onAddSearchHistoryItemEffect = { viewModel.addSearchHistoryItem(it) }
+        onAddSearchHistoryItemEffect = { viewModel.addSearchHistoryItem(it) },
+        onMenuButtonClick = onMenuButtonClick
     )
 }
 
 @Composable
 private fun SearchItemsScreen(
     viewModel: SearchItemsScreenViewModel,
-    menuItems: List<MenuItem> = listOf(),
-    searchHistory: List<SearchHistoryItem> = listOf(),
     menuItemTitleForSearch: String = "",
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
+    menuItems: List<MenuItem> = listOf(),
+    searchHistoryItems: List<SearchHistoryItem> = listOf(),
     onClearMenuItemsClick: () -> Unit = {},
     onGetMenuItemsByTitleUpdate: () -> Unit = {},
     onUpdateMenuItemTitleInput: (String) -> Unit = {},
     onClearMenuItemTitleForSearchClick: () -> Unit = {},
-    onPopBackStackClick: () -> Unit = {},
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit = {},
-    onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit = {}
+    onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit = {},
+    onMenuButtonClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -83,20 +76,17 @@ private fun SearchItemsScreen(
                 onClearMenuItemTitleForSearchClick = onClearMenuItemTitleForSearchClick,
                 onAddMenuItemToCartClick = onAddMenuItemToCartClick,
                 onAddSearchHistoryItemEffect = onAddSearchHistoryItemEffect,
-                onPopBackStackClick = onPopBackStackClick
+                onMenuButtonClick = onMenuButtonClick,
             )
         },
-        content = {
-            println(it)
+        content = { paddingValuesChild ->
             SearchItemsMain(
                 viewModel = viewModel,
-                menuItems = menuItems,
-                searchHistory = searchHistory,
+                searchHistoryItems = searchHistoryItems,
                 onGetMenuItemsByTitleUpdate = onGetMenuItemsByTitleUpdate,
-                onAddMenuItemToCartClick = onAddMenuItemToCartClick,
                 onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
                 paddingValuesParent = paddingValuesParent,
-                paddingValuesChild = it
+                paddingValuesChild = paddingValuesChild
             )
         }
     )

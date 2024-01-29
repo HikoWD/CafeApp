@@ -11,7 +11,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class GetOrdersUseCase @Inject constructor(private val orderRepository: OrderRepository) {
     suspend operator fun invoke(): Flow<List<Order>> {
-        return orderRepository.getOrders().map { ordersLocalModel ->
+        return orderRepository.getAll().map { ordersLocalModel ->
             ordersLocalModel.map {
                 it.toDomain()
             }

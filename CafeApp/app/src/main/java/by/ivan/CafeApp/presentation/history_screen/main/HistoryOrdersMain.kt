@@ -67,7 +67,10 @@ private fun HistoryOrdersMain(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = paddingValuesParent.calculateBottomPadding())
+            .padding(
+                top = paddingValuesChild.calculateTopPadding(),
+                bottom = paddingValuesParent.calculateBottomPadding()
+            )
     ) {
         Crossfade(
             modifier = Modifier
@@ -131,10 +134,12 @@ private fun HistoryOrdersMain(
                 HistoryOrdersScreenState.Loading -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                            .fillMaxSize()
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                 }
 

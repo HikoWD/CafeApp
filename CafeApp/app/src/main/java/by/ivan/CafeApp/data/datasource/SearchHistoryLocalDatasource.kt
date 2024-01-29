@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchHistoryLocalDatasource @Inject constructor(private val searchHistoryDao: SearchHistoryDao) {
-    suspend fun getAll(): Flow<List<SearchHistoryItemLocalModel>> =
+    suspend fun observeAll(): Flow<List<SearchHistoryItemLocalModel>> =
         withContext(Dispatchers.IO) {
             return@withContext searchHistoryDao.observeAll()
         }

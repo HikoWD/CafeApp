@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -27,10 +26,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,32 +40,42 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import by.ivan.CafeApp.domain.table.model.Table
-import kotlinx.coroutines.Job
 
 @Composable
 fun ChooseTableDialog(
     viewModel: ChooseTableDialogViewModel = hiltViewModel(),
-    tables: List<Table>,
-    currentTable: Table,
-    onGetTablesEffect: () -> Job,
-    onGetCurrentTableEffect: () -> Job,
-    onSaveTableClick: (Table) -> Unit,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     onDismissRequest: () -> Unit,
 ) {
-    DisposableEffect(Unit) {
-        val job1 = onGetTablesEffect()
-        val job = onGetCurrentTableEffect()
+    val state by viewModel.uiState.collectAsState()
+
+    // If `lifecycleOwner` changes, dispose and reset the effect
+    DisposableEffect(lifecycleOwner) {
+        // Create an observer that triggers our remembered callbacks
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.getTables()
+                viewModel.getCurrentTable()
+            }
+        }
+
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // When the effect leaves the Composition, remove the observer
         onDispose {
-            job1.cancel()
-            job.cancel()
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
     ChooseTableDialog(
-        tables = tables,
-        currentTable = currentTable,
-        onSaveTableClick = onSaveTableClick,
+        tables = state.tables,
+        currentTable = state.currentTable,
+        onSaveTableClick = { viewModel.saveTable(it)},
         onDismissRequest = onDismissRequest,
     )
 }
@@ -87,8 +99,10 @@ private fun ChooseTableDialog(
     ) {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(550.dp)
+                .size(
+                    width = 400.dp,
+                    height = 550.dp
+                )
                 .padding(16.dp),
         ) {
             Column(

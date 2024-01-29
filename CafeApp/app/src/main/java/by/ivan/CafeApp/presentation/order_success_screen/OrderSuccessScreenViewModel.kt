@@ -23,14 +23,32 @@ class OrderSuccessScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OrderSuccessScreenUiState())
     val uiState: StateFlow<OrderSuccessScreenUiState> = _uiState
 
-    fun getMenuItemsByOrderItemsIds(order: Order) {
+    fun getMenuItemsByOrderItemsId(order: Order) {
         viewModelScope.launch {
-            val menuItems = getMenuItemsByOrderItemsIdsUseCase(order = order)
-            _uiState.update {
-                it.copy(menuItems = menuItems)
-            }.also {
-                currentTableUseCase().firstOrNull()?.let{
-                    searchNewOrdersUseCase(tableId = it.id)
+            _uiState.value = _uiState.value.copy(
+                orderSuccessScreenState = OrderSuccessScreenState.Loading
+            )
+
+            getMenuItemsByOrderItemsIdsUseCase(order = order).collect { menuItems ->
+                when {
+                    menuItems.isEmpty() -> {
+                        _uiState.update {
+                            it.copy(orderSuccessScreenState = OrderSuccessScreenState.Empty)
+                        }
+                    }
+
+                    else -> {
+                        _uiState.update {
+                            it.copy(
+                                menuItems = menuItems,
+                                orderSuccessScreenState = OrderSuccessScreenState.Loaded
+                            )
+                        }.also {
+                            currentTableUseCase().firstOrNull()?.let { table ->
+                                searchNewOrdersUseCase(table = table)
+                            }
+                        }
+                    }
                 }
             }
         }

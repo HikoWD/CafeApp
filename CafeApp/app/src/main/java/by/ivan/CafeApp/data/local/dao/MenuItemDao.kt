@@ -10,7 +10,7 @@ interface MenuItemDao {
     fun observeAll(): Flow<List<MenuItemLocalModel>>
 
     @Query("SELECT * FROM MenuItemLocalModel WHERE id = :id")
-    suspend fun getById(id: Int): MenuItemLocalModel
+    fun getById(id: Int): Flow<MenuItemLocalModel>
 
     @Query("SELECT * FROM MenuItemLocalModel WHERE title like '%' || :title || '%'")
     fun getByTitle(title: String): Flow<List<MenuItemLocalModel>>
@@ -20,6 +20,9 @@ interface MenuItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMenuItems(menuItemLocalModel: List<MenuItemLocalModel>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun add(menuItemLocalModel: MenuItemLocalModel)
 
     @Update
     suspend fun edit(menuItemLocalModel: MenuItemLocalModel)

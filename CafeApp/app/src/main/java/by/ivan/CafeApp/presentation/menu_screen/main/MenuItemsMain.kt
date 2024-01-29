@@ -1,5 +1,6 @@
 package by.ivan.CafeApp.presentation.menu_screen.main
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -59,37 +60,46 @@ fun MenuItemsMain(
     paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues
 ) {
+    val localContext = LocalContext.current
+
     MenuItemsMain(
+        localContext = localContext,
         categories = categories,
         menuItems = menuItems,
         categoriesScreenState = categoriesScreenState,
         menuItemsScreenState = menuItemsScreenState,
+        paddingValuesParent = paddingValuesParent,
+        paddingValuesChild = paddingValuesChild,
         onGetMenuItemsByCategoryIdClick = onGetMenuItemsByCategoryIdClick,
         onAddMenuItemToCartClick = onAddMenuItemToCartClick,
-        paddingValuesParent = paddingValuesParent,
-        paddingValuesChild = paddingValuesChild
     )
 }
 
 @Composable
 private fun MenuItemsMain(
+    localContext: Context = LocalContext.current,
     categories: List<Category> = listOf(),
     menuItems: List<MenuItem> = listOf(),
     categoriesScreenState: CategoriesScreenState = CategoriesScreenState.Idle,
     menuItemsScreenState: MenuItemsScreenState = MenuItemsScreenState.Idle,
+    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
+    paddingValuesChild: PaddingValues = PaddingValues(2.dp),
     onGetMenuItemsByCategoryIdClick: (categoryId: Int) -> Unit = {},
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit = {},
-    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
-    paddingValuesChild: PaddingValues = PaddingValues(2.dp)
 ) {
-    val localContext = LocalContext.current
-
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = paddingValuesChild.calculateTopPadding(),
+                bottom = paddingValuesParent.calculateBottomPadding()
+            )
+    ) {
         Crossfade(
             targetState = categoriesScreenState,
             modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .weight(1f),
             animationSpec = tween(
                 durationMillis = 400,
                 easing = LinearEasing
@@ -102,9 +112,11 @@ private fun MenuItemsMain(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
-                        contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                 }
 
@@ -136,8 +148,8 @@ private fun MenuItemsMain(
         Crossfade(
             targetState = menuItemsScreenState,
             modifier = Modifier
-                .weight(9f)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .weight(9f),
             animationSpec = tween(
                 durationMillis = 400,
                 easing = FastOutSlowInEasing
@@ -148,10 +160,12 @@ private fun MenuItemsMain(
                 is MenuItemsScreenState.Loading -> {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                            .fillMaxSize()
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                 }
 
@@ -218,7 +232,7 @@ private fun DrawCategories(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = item.title, fontSize = 20.sp)
+                        Text(text = item.title, fontSize = 20.sp, textAlign = TextAlign.Center)
                     }
                 }
             }
@@ -237,7 +251,6 @@ private fun DrawMenuItems(
         columns = GridCells.Adaptive(minSize = 420.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = paddingValuesParent.calculateBottomPadding())
     ) {
         itemsIndexed(items = menuItems) { index, item ->
             Card(

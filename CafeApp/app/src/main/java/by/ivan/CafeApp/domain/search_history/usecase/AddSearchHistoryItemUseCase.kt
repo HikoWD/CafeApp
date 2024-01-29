@@ -1,4 +1,4 @@
-package by.ivan.CafeApp.domain.search_history
+package by.ivan.CafeApp.domain.search_history.usecase
 
 import by.ivan.CafeApp.data.local.entity.toLocalModel
 import by.ivan.CafeApp.data.repo.SearchHistoryRepository

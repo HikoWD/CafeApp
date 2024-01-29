@@ -2,10 +2,15 @@ package by.ivan.CafeApp.presentation.cart_screen
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
+import by.ivan.CafeApp.domain.cart.model.CartItem
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.order.model.Order
 import by.ivan.CafeApp.presentation.CartNavGraph
@@ -20,19 +25,22 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun CartScreen(
     viewModel: CartScreenViewModel = hiltViewModel(),
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     navigator: DestinationsNavigator,
     paddingValuesParent: PaddingValues,
-//    onGetCartItemsEffect: () -> Unit,
-//    onAddMenuItemToCartClick: (MenuItem) -> Unit,
-//    onRemoveMenuItemFromCartClick: (MenuItem) -> Unit,
-//    onRemoveAllMenuItemsFromCartClick: () -> Unit,
-//    onPostOrderClick: () -> Unit,
+    onMenuButtonClick: () -> Unit
 ) {
+    val state by viewModel.uiState.collectAsState()
+
     CartScreen(
         viewModel = viewModel,
+        cartItems = state.cartItems,
+        isNotEmptyUiState = state.cartItems.isNotEmpty(),
+        orderResult = state.orderResult,
+        errorResult = state.errorResult,
+        orderPostState = state.orderPostState,
         onNavigateOrderScreenSuccessScreen = { navigator.navigate(OrderSuccessScreenDestination(it)) },
         paddingValuesParent = paddingValuesParent,
-        onGetCartItemsEffect = { viewModel.getCartItems() },
         onAddMenuItemToCartClick = { viewModel.addCartItem(menuItem = it) },
         onRemoveMenuItemFromCartClick = {
             viewModel.decreaseCountCartItem(
@@ -40,38 +48,54 @@ fun CartScreen(
             )
         },
         onRemoveAllMenuItemsFromCartClick = { viewModel.removeCartItems() },
-        onPostOrderClick = { viewModel.postOrder() }
+        onPostOrderClick = { viewModel.postOrder() },
+        onChangeStateToIdleEffect = { viewModel.changeStateToIdle() },
+        onMenuButtonClick = onMenuButtonClick
     )
 }
 
 @Composable
 private fun CartScreen(
     viewModel: CartScreenViewModel,
+    cartItems: List<CartItem> = listOf(),
+    isNotEmptyUiState: Boolean = false,
+    orderResult: Order = Order(),
+    errorResult: String = "",
+    orderPostState: OrderPostState = OrderPostState.IDLE,
     onNavigateOrderScreenSuccessScreen: (Order) -> Unit = {},
     paddingValuesParent: PaddingValues,
-    onGetCartItemsEffect: () -> Unit = {},
     onAddMenuItemToCartClick: (MenuItem) -> Unit = {},
     onRemoveMenuItemFromCartClick: (MenuItem) -> Unit = {},
     onRemoveAllMenuItemsFromCartClick: () -> Unit = {},
-    onPostOrderClick: () -> Unit = {}
+    onPostOrderClick: () -> Unit = {},
+    onChangeStateToIdleEffect: () -> Unit = {},
+    onMenuButtonClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CartTopBar(
                 viewModel = viewModel,
-                onRemoveAllMenuItemsFromCartClick = onRemoveAllMenuItemsFromCartClick
+                onRemoveAllMenuItemsFromCartClick = onRemoveAllMenuItemsFromCartClick,
+                onMenuButtonClick = onMenuButtonClick
             )
-        }) {
-        CartMain(
-            viewModel = viewModel,
-            onNavigateOrderScreenSuccessScreen = onNavigateOrderScreenSuccessScreen,
-            onGetCartItemsEffect = onGetCartItemsEffect,
-            onAddMenuItemToCartClick = onAddMenuItemToCartClick,
-            onRemoveMenuItemFromCartClick = onRemoveMenuItemFromCartClick,
-            onPostOrderClick = onPostOrderClick,
-            paddingValuesParent = paddingValuesParent,
-            paddingValuesChild = it
-        )
-    }
+        },
+        content = { paddingValuesChild ->
+            CartMain(
+                viewModel = viewModel,
+                cartItems = cartItems,
+                isNotEmptyUiState = isNotEmptyUiState,
+                orderResult = orderResult,
+                errorResult = errorResult,
+                orderPostState = orderPostState,
+                paddingValuesParent = paddingValuesParent,
+                paddingValuesChild = paddingValuesChild,
+                onNavigateOrderScreenSuccessScreen = onNavigateOrderScreenSuccessScreen,
+                onAddMenuItemToCartClick = onAddMenuItemToCartClick,
+                onRemoveMenuItemFromCartClick = onRemoveMenuItemFromCartClick,
+                onPostOrderClick = onPostOrderClick,
+                onChangeStateToIdleEffect = onChangeStateToIdleEffect,
+            )
+        }
+    )
 }

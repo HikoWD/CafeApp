@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SearchHistoryDao {
+    //todo
     @Query("SELECT * FROM SearchHistoryItemLocalModel WHERE `query` IN " +
             "(SELECT `query` FROM SearchHistoryItemLocalModel " +
             "GROUP BY `query` HAVING MAX(timestamp)) ORDER BY timestamp DESC")

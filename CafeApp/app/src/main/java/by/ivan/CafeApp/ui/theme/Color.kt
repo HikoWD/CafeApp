@@ -1,4 +1,4 @@
-package by.ivan.CafeApp.presentation.theme
+package by.ivan.CafeApp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

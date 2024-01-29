@@ -10,8 +10,6 @@ data class MenuItemsScreenUiState(
     val errorMenuItems: String = "",
     val categoriesIsLoading: Boolean = false,
     val menuItemsIsLoading: Boolean = false,
-    val showLoginDialog: Boolean = false,
-    val showChooseTableDialog: Boolean = false,
     val categoriesScreenState: CategoriesScreenState = CategoriesScreenState.Idle,
     val menuItemsScreenState: MenuItemsScreenState = MenuItemsScreenState.Idle,
 )

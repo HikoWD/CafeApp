@@ -13,8 +13,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class GetTablesUseCase @Inject constructor(private val tableRepository: TableRepository) {
     suspend operator fun invoke(): Flow<List<Table>> = withContext(Dispatchers.IO) {
-        return@withContext tableRepository.getTables().map { list ->
-            list.map {
+        return@withContext tableRepository.getAll().map { tablesLocalModel ->
+            tablesLocalModel.map {
                 it.toDomain()
             }
         }

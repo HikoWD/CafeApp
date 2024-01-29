@@ -1,6 +1,5 @@
 package by.ivan.CafeApp.data.repo
 
-import android.content.Context
 import by.ivan.CafeApp.data.datasource.TableLocalDatasource
 import by.ivan.CafeApp.data.datasource.TableRemoteDatasource
 import by.ivan.CafeApp.data.local.entity.TableLocalModel
@@ -9,7 +8,6 @@ import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
 import by.ivan.CafeApp.data.remote.model.TableRemoteModelList
 import by.ivan.CafeApp.domain.table.model.Table
 import com.haroldadmin.cnradapter.NetworkResponse
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
@@ -19,11 +17,10 @@ import javax.inject.Singleton
 class TableRepository @Inject constructor(
     private val tableRemoteDatasource: TableRemoteDatasource,
     private val tableLocalDatasource: TableLocalDatasource,
-    private val tableVersionsRepository: TableVersionsRepository,
-    @ApplicationContext private val context: Context
+    private val tableVersionsRepository: TableVersionsRepository
 ) {
-    suspend fun getTables(): Flow<List<TableLocalModel>> {
-        return tableLocalDatasource.getTables()
+    suspend fun getAll(): Flow<List<TableLocalModel>> {
+        return tableLocalDatasource.observeAll()
     }
 
     suspend fun searchNewTable(): NetworkResponse<TableRemoteModelList, ResponseErrorMessage> {
@@ -59,7 +56,7 @@ class TableRepository @Inject constructor(
 
             //tableLocalDatasource.removeAll()
 
-            val tables = tableLocalDatasource.getTables().firstOrNull()
+            val tables = tableLocalDatasource.observeAll().firstOrNull()
             if(tables?.count() != tableLocalModel.count()){
                 tables?.forEach {
                     if(!tableLocalModel.contains(it)){

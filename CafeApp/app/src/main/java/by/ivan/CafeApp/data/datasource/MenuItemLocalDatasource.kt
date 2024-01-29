@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MenuItemLocalDatasource @Inject constructor(private val menuItemDao: MenuItemDao) {
-    suspend fun getMenuItems(): Flow<List<MenuItemLocalModel>> = withContext(Dispatchers.IO) {
+    suspend fun getAll(): Flow<List<MenuItemLocalModel>> = withContext(Dispatchers.IO) {
         return@withContext menuItemDao.observeAll()
     }
 
@@ -24,7 +24,7 @@ class MenuItemLocalDatasource @Inject constructor(private val menuItemDao: MenuI
             return@withContext menuItemDao.getByTitle(title)
         }
 
-    suspend fun getMenuItemById(id: Int): MenuItemLocalModel = withContext(Dispatchers.IO){
+    suspend fun getMenuItemById(id: Int): Flow<MenuItemLocalModel> = withContext(Dispatchers.IO){
         return@withContext menuItemDao.getById(id = id)
     }
 

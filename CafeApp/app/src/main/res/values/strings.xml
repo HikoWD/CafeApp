@@ -5,4 +5,8 @@
     <string name="searchItems_screen">Поиск</string>
     <string name="cart_screen">Корзина</string>
     <string name="historyOrders_screen">История</string>
+
+    <string name="drawer_login">Login</string>
+    <string name="drawer_login_description">Login navigation button</string>
+    <string name="drawer_menu_description">Menu navigation button</string>
 </resources>

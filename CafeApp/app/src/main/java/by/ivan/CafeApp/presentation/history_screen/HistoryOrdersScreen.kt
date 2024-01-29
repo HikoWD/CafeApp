@@ -2,13 +2,13 @@ package by.ivan.CafeApp.presentation.history_screen
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
 import by.ivan.CafeApp.domain.order.model.Order
 import by.ivan.CafeApp.presentation.HistoryNavGraph
 import by.ivan.CafeApp.presentation.destinations.OrderDetailsScreenDestination
@@ -22,21 +22,11 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun HistoryOrdersScreen(
     viewModel: HistoryOrdersScreenViewModel = hiltViewModel(),
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     navigator: DestinationsNavigator,
-    paddingValuesParent: PaddingValues
+    paddingValuesParent: PaddingValues,
+    onMenuButtonClick: () -> Unit
 ) {
-    DisposableEffect(Unit) {
-        val job = viewModel.getOrders()
-
-        onDispose {
-            job.cancel()
-        }
-    }
-
-    SideEffect {
-        viewModel.searchNewOrder()
-    }
-
     HistoryOrdersScreen(
         viewModel = viewModel,
         paddingValuesParent = paddingValuesParent,
@@ -45,6 +35,7 @@ fun HistoryOrdersScreen(
                 OrderDetailsScreenDestination(it)
             )
         },
+        onMenuButtonClick = onMenuButtonClick
     )
 }
 
@@ -53,10 +44,16 @@ private fun HistoryOrdersScreen(
     viewModel: HistoryOrdersScreenViewModel,
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onNavigateToOrderDetailsScreenClick: (Order) -> Unit = {},
+    onMenuButtonClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { HistoryOrdersTopBar(viewModel = viewModel) },
+        topBar = {
+            HistoryOrdersTopBar(
+                viewModel = viewModel,
+                onMenuButtonClick = onMenuButtonClick
+            )
+        },
         content = { paddingValuesChild ->
             HistoryOrdersMain(
                 viewModel = viewModel,

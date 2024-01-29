@@ -11,10 +11,6 @@ import by.ivan.CafeApp.domain.menu.usecase.GetMenuItemsSortedByAlphabetUseCase
 import by.ivan.CafeApp.domain.menu.usecase.GetMenuItemsSortedByPriceUseCase
 import by.ivan.CafeApp.domain.menu.usecase.SearchNewMenuItemUseCase
 import by.ivan.CafeApp.domain.result.CompletableResult
-import by.ivan.CafeApp.domain.table.usecase.GetCurrentTableUseCase
-import by.ivan.CafeApp.domain.table.usecase.GetTablesUseCase
-import by.ivan.CafeApp.domain.table.usecase.SaveTableUseCase
-import by.ivan.CafeApp.domain.table.usecase.SearchNewTablesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,13 +28,13 @@ class MenuItemsScreenViewModel @Inject constructor(
     private val getMenuItemsSortedByAlphabetUseCase: GetMenuItemsSortedByAlphabetUseCase,
     private val getMenuItemsSortedByPriceUseCase: GetMenuItemsSortedByPriceUseCase,
     private val addMenuItemToCartUseCase: AddMenuItemToCartUseCase,
-    private val getTablesUseCase: GetTablesUseCase,
-    private val searchNewTablesUseCase: SearchNewTablesUseCase,
-    private val getCurrentTableUseCase: GetCurrentTableUseCase,
-    private val saveTableUseCase: SaveTableUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MenuItemsScreenUiState())
     val uiState: StateFlow<MenuItemsScreenUiState> = _uiState
+
+    init{
+        getCategories()
+    }
 
     fun searchNewCategory(): Job {
         return viewModelScope.launch {
@@ -46,18 +42,17 @@ class MenuItemsScreenViewModel @Inject constructor(
                 categoriesScreenState = CategoriesScreenState.Loading
             )
             when (val result = searchNewCategoryUseCase()) {
-                is CompletableResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        categoriesScreenState = CategoriesScreenState.Error(errorMessage = result.errorMessage)
-                    )
-                }
-
                 is CompletableResult.Success -> {
                     _uiState.value = _uiState.value.copy(
                         categoriesScreenState = CategoriesScreenState.Loaded,
                     )
                 }
 
+                is CompletableResult.Error -> {
+                    _uiState.value = _uiState.value.copy(
+                        categoriesScreenState = CategoriesScreenState.Error(errorMessage = result.errorMessage)
+                    )
+                }
 
                 else -> {}
             }
@@ -70,15 +65,15 @@ class MenuItemsScreenViewModel @Inject constructor(
                 menuItemsScreenState = MenuItemsScreenState.Loading
             )
             when (val result = searchNewMenuItemUseCase()) {
-                is CompletableResult.Error -> {
-                    _uiState.value = _uiState.value.copy(
-                        menuItemsScreenState = MenuItemsScreenState.Error(errorMessage = result.errorMessage),
-                    )
-                }
-
                 is CompletableResult.Success -> {
                     _uiState.value = _uiState.value.copy(
                         menuItemsScreenState = MenuItemsScreenState.Loaded,
+                    )
+                }
+
+                is CompletableResult.Error -> {
+                    _uiState.value = _uiState.value.copy(
+                        menuItemsScreenState = MenuItemsScreenState.Error(errorMessage = result.errorMessage),
                     )
                 }
 
@@ -87,8 +82,8 @@ class MenuItemsScreenViewModel @Inject constructor(
         }
     }
 
-    fun getCategories(): Job {
-        return viewModelScope.launch {
+    fun getCategories() {
+         viewModelScope.launch {
             searchNewCategory().join()
 
             var isMenuItemsFetched = false
@@ -140,28 +135,6 @@ class MenuItemsScreenViewModel @Inject constructor(
     fun addMenuItemToCart(menuItem: MenuItem) {
         viewModelScope.launch {
             addMenuItemToCartUseCase(menuItem = menuItem)
-        }
-    }
-
-    fun showLoginDialog(show: Boolean) {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showLoginDialog = show)
-            }
-        }
-    }
-
-    fun showChooseTableDialog(show: Boolean) {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showChooseTableDialog = show)
-            }
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            getCategories()
         }
     }
 }

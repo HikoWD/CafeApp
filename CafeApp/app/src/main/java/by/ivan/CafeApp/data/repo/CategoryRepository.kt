@@ -20,7 +20,7 @@ class CategoryRepository @Inject constructor(
     private val tableVersionsRepository: TableVersionsRepository,
     private val menuItemLocalDatasource: MenuItemLocalDatasource
 ) {
-    suspend fun getLocalCategories(): Flow<List<CategoryLocalModel>> {
+    suspend fun getAll(): Flow<List<CategoryLocalModel>> {
         return categoryLocalDatasource.getAll()
     }
 

@@ -13,7 +13,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class GetCategoriesUseCase @Inject constructor(private val categoryRepository: CategoryRepository) {
     suspend operator fun invoke(): Flow<List<Category>> = withContext(Dispatchers.IO) {
-        return@withContext categoryRepository.getLocalCategories()
-            .map { list -> list.map { it.toDomain() } }
+        return@withContext categoryRepository.getAll()
+            .map { categoriesLocalModel -> categoriesLocalModel.map { it.toDomain() } }
     }
 }

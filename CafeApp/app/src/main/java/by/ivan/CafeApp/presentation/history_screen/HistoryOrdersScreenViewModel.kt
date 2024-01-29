@@ -24,8 +24,13 @@ class HistoryOrdersScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HistoryOrdersScreenUiState())
     val uiState: StateFlow<HistoryOrdersScreenUiState> = _uiState
 
-    fun getOrders(): Job {
-        return viewModelScope.launch {
+    init {
+        getOrders()
+    }
+
+    fun getOrders() {
+        viewModelScope.launch {
+            searchNewOrder().join()
             getOrdersUseCase().collect { orders ->
                 _uiState.update {
                     it.copy(orders = orders)
@@ -34,13 +39,13 @@ class HistoryOrdersScreenViewModel @Inject constructor(
         }
     }
 
-    fun searchNewOrder() {
-        viewModelScope.launch {
+    fun searchNewOrder(): Job {
+        return viewModelScope.launch {
             _uiState.value =
                 _uiState.value.copy(historyOrdersScreenState = HistoryOrdersScreenState.Loading)
             val currentTable = getCurrentTableUseCase().firstOrNull()
             currentTable?.let {
-                when (val result = searchNewOrdersUseCase(currentTable.id)) {
+                when (val result = searchNewOrdersUseCase(table = currentTable)) {
                     is CompletableResult.Success -> {
                         _uiState.value =
                             _uiState.value.copy(historyOrdersScreenState = HistoryOrdersScreenState.Loaded)

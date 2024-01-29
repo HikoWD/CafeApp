@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class TableLocalDatasource @Inject constructor(private val tableDao: TableDao) {
 
-    suspend fun getTables(): Flow<List<TableLocalModel>> = withContext(Dispatchers.IO){
+    suspend fun observeAll(): Flow<List<TableLocalModel>> = withContext(Dispatchers.IO){
         return@withContext tableDao.observeAll()
     }
     suspend fun saveTables(tableLocalModel: List<TableLocalModel>) = withContext(Dispatchers.IO){

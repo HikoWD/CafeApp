@@ -1,5 +1,9 @@
 package by.ivan.CafeApp.presentation.order_success_screen.main
 
+import android.widget.Toast
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,24 +16,29 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import by.ivan.CafeApp.domain.menu.model.MenuItem
+import by.ivan.CafeApp.presentation.order_success_screen.OrderSuccessScreenState
 import by.ivan.CafeApp.presentation.order_success_screen.OrderSuccessScreenViewModel
 import coil.compose.AsyncImage
 
@@ -37,29 +46,88 @@ import coil.compose.AsyncImage
 fun OrderSuccessScreenMain(
     viewModel: OrderSuccessScreenViewModel = hiltViewModel(),
     menuItems: List<MenuItem>,
-    onNavigateToMenuClick: () -> Unit,
+    onNavigateToMenuItemsScreenClick: () -> Unit,
     paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues,
 ) {
-    OrderSuccessScreenMain(
-        menuItems = menuItems,
-        paddingValuesParent = paddingValuesParent,
-        onNavigateToMenuClick = onNavigateToMenuClick,
-    )
+    val localContext = LocalContext.current
+
+    val state by viewModel.uiState.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Crossfade(
+            targetState = state.orderSuccessScreenState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            animationSpec = tween(
+                durationMillis = 400,
+                easing = LinearEasing
+            ),
+            label = ""
+        ) { state ->
+            when (state) {
+                is OrderSuccessScreenState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    ) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+
+                is OrderSuccessScreenState.Empty -> {
+                    Toast.makeText(localContext, "Пусто", Toast.LENGTH_LONG).show()
+                    OrderSuccessScreenMain(
+                        menuItems = menuItems,
+                        paddingValuesParent = paddingValuesParent,
+                        paddingValuesChild = paddingValuesChild,
+                        onNavigateToMenuItemsScreenClick = onNavigateToMenuItemsScreenClick,
+                    )
+                }
+
+                is OrderSuccessScreenState.Loaded -> {
+                    OrderSuccessScreenMain(
+                        menuItems = menuItems,
+                        paddingValuesParent = paddingValuesParent,
+                        paddingValuesChild = paddingValuesChild,
+                        onNavigateToMenuItemsScreenClick = onNavigateToMenuItemsScreenClick,
+                    )
+                }
+
+                is OrderSuccessScreenState.Idle -> {}
+
+                else -> {}
+            }
+        }
+    }
 }
 
 @Composable
 private fun OrderSuccessScreenMain(
     menuItems: List<MenuItem> = listOf(),
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
-    onNavigateToMenuClick: () -> Unit,
+    paddingValuesChild: PaddingValues = PaddingValues(2.dp),
+    onNavigateToMenuItemsScreenClick: () -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = paddingValuesChild.calculateTopPadding(),
+                bottom = paddingValuesParent.calculateBottomPadding()
+            )
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 300.dp),
             contentPadding = PaddingValues(8.dp),
-            modifier = Modifier
-                .weight(0.8f)
+            modifier = Modifier.weight(0.9f)
         ) {
             itemsIndexed(items = menuItems) { index, item ->
                 Card(
@@ -127,15 +195,20 @@ private fun OrderSuccessScreenMain(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.2f)
-                .padding(bottom = paddingValuesParent.calculateBottomPadding())
+                .weight(0.1f)
                 .shadow(
                     elevation = 14.dp,
                     clip = true,
                     shape = RectangleShape
                 ),
-            border = BorderStroke(0.dp, Color.LightGray),
-            backgroundColor = Color.White
+            shape = RoundedCornerShape(0.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 0.dp
+            ),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+            ),
+            border = BorderStroke(0.dp, Color.LightGray)
         ) {
             Box(
                 modifier = Modifier
@@ -147,16 +220,17 @@ private fun OrderSuccessScreenMain(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Button(
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                    ),
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        onNavigateToMenuClick()
-                    }
+                    onClick = { onNavigateToMenuItemsScreenClick() }
                 ) {
                     Text(
                         text = "OK",
-                        color = Color.White,
-                        fontSize = 24.sp
+                        color = MaterialTheme.colorScheme.background,
+                        style = MaterialTheme.typography.titleLarge
                     )
                 }
             }

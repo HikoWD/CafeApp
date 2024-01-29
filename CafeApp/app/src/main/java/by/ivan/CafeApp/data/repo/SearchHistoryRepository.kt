@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class SearchHistoryRepository @Inject constructor(private val searchHistoryLocalDatasource: SearchHistoryLocalDatasource) {
     suspend fun getAll(): Flow<List<SearchHistoryItemLocalModel>> {
-        return searchHistoryLocalDatasource.getAll()
+        return searchHistoryLocalDatasource.observeAll()
     }
 
     suspend fun add(searchHistoryItemLocalModel: SearchHistoryItemLocalModel){

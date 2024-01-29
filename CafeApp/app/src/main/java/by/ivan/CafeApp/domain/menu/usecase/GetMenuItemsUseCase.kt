@@ -14,9 +14,10 @@ import javax.inject.Inject
 class GetMenuItemsUseCase @Inject constructor(private val menuItemRepository: MenuItemRepository) {
     suspend operator fun invoke(categoryId: Int): Flow<List<MenuItem>> =
         withContext(Dispatchers.IO) {
-            menuItemRepository.getMenuItems().map { menuItemsLocalModel ->
-                    menuItemsLocalModel.filter { it.categoryId == categoryId }
-                        .map { it.toDomain() }
-                }
+            menuItemRepository.getAll().map { menuItemsLocalModel ->
+                menuItemsLocalModel
+                    .filter { it.categoryId == categoryId }
+                    .map { it.toDomain() }
+            }
         }
 }

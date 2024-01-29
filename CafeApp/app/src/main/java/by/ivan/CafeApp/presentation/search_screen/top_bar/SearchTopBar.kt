@@ -16,7 +16,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,9 +37,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import by.ivan.CafeApp.R
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.search_history.model.SearchHistoryItem
 import by.ivan.CafeApp.presentation.search_screen.SearchItemsScreenViewModel
@@ -61,7 +63,7 @@ fun SearchTopBar(
     onClearMenuItemTitleForSearchClick: () -> Unit,
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit,
     onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit,
-    onPopBackStackClick: () -> Unit,
+    onMenuButtonClick: () -> Unit,
 ) {
     SearchTopBar(
         menuItems = menuItems,
@@ -73,7 +75,7 @@ fun SearchTopBar(
         onClearMenuItemTitleForSearchClick = onClearMenuItemTitleForSearchClick,
         onAddMenuItemToCartClick = onAddMenuItemToCartClick,
         onAddSearchHistoryItemEffect = onAddSearchHistoryItemEffect,
-        onPopBackStackClick = onPopBackStackClick
+        onMenuButtonClick = onMenuButtonClick,
     )
 }
 
@@ -89,11 +91,14 @@ private fun SearchTopBar(
     onClearMenuItemTitleForSearchClick: () -> Unit = {},
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit = {},
     onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit = {},
-    onPopBackStackClick: () -> Unit = {}
+    onMenuButtonClick: () -> Unit = {},
 ) {
     var isActive by rememberSaveable { mutableStateOf(false) }
+
     Box(
-        Modifier.fillMaxWidth()
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
     ) {
         SearchBar(
             colors = SearchBarDefaults.colors(
@@ -112,13 +117,27 @@ private fun SearchTopBar(
                 isActive = activeChange
             },
             placeholder = { Text("Введите название блюда") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            leadingIcon = {
+                IconButton(onClick = {
+                    onMenuButtonClick()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        contentDescription = stringResource(id = R.string.drawer_menu_description)
+                    )
+                }
+            },
             trailingIcon = {
                 IconButton(onClick = {
                     onClearMenuItemTitleForSearchClick()
                     onClearMenuItemsClick()
                 }) {
-                    Icon(Icons.Default.Clear, contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        contentDescription = null
+                    )
                 }
             },
             content = {
@@ -243,33 +262,5 @@ private fun SearchTopBar(
                 }
             }
         )
-//    TopAppBar(backgroundColor = Color.White) {
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceBetween,
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            IconButton(onClick = {
-//                onPopBackStackClick()
-//            }) {
-//                Icon(
-//                    Icons.Filled.ArrowBack,
-//                    contentDescription = "Back",
-//                    tint = Color.Black,
-//                )
-//            }
-//            TextField(
-//                value = menuItemTitleForSearch,
-//                onValueChange = { value ->
-//                    onUpdateMenuItemTitleInput(value)
-//                    onGetMenuItemsByTitleUpdate()
-//                },
-//                modifier = Modifier.fillMaxWidth(),
-//                textStyle = TextStyle(color = Color.Black, fontSize = 20.sp),
-//                placeholder = { Text(text = "Введите название блюда") },
-//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-//            )
-//        }
-//    }
     }
 }

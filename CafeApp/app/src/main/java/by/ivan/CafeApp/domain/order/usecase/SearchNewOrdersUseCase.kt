@@ -2,6 +2,7 @@ package by.ivan.CafeApp.domain.order.usecase
 
 import by.ivan.CafeApp.data.repo.OrderRepository
 import by.ivan.CafeApp.domain.result.CompletableResult
+import by.ivan.CafeApp.domain.table.model.Table
 import com.haroldadmin.cnradapter.NetworkResponse
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
@@ -10,8 +11,8 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class SearchNewOrdersUseCase @Inject constructor(private val orderRepository: OrderRepository) {
-    suspend operator fun invoke(tableId: Int): CompletableResult = withContext(Dispatchers.IO) {
-        return@withContext when (val result = orderRepository.searchNewOrder(tableId = tableId)) {
+    suspend operator fun invoke(table: Table): CompletableResult = withContext(Dispatchers.IO) {
+        return@withContext when (val result = orderRepository.searchNewOrder(tableId = table.id)) {
             is NetworkResponse.Success -> {
                 CompletableResult.Success
             }

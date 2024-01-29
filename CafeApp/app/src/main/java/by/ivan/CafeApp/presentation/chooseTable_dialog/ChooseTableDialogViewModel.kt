@@ -2,6 +2,7 @@ package by.ivan.CafeApp.presentation.chooseTable_dialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.ivan.CafeApp.domain.order.usecase.SearchNewOrdersUseCase
 import by.ivan.CafeApp.domain.result.CompletableResult
 import by.ivan.CafeApp.domain.table.model.Table
 import by.ivan.CafeApp.domain.table.usecase.GetCurrentTableUseCase
@@ -21,7 +22,8 @@ class ChooseTableDialogViewModel @Inject constructor(
     private val getTablesUseCase: GetTablesUseCase,
     private val searchNewTablesUseCase: SearchNewTablesUseCase,
     private val getCurrentTableUseCase: GetCurrentTableUseCase,
-    private val saveTableUseCase: SaveTableUseCase
+    private val saveTableUseCase: SaveTableUseCase,
+    private val searchNewOrdersUseCase: SearchNewOrdersUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ChooseTableDialogUiState())
     val uiState: StateFlow<ChooseTableDialogUiState> = _uiState
@@ -44,8 +46,8 @@ class ChooseTableDialogViewModel @Inject constructor(
         }
     }
 
-    fun getTables(): Job {
-        return viewModelScope.launch {
+    fun getTables() {
+        viewModelScope.launch {
             searchNewTable().join()
             getTablesUseCase().collect { tables ->
                 _uiState.update {
@@ -55,9 +57,9 @@ class ChooseTableDialogViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentTable(): Job {
-        return viewModelScope.launch {
-            getCurrentTableUseCase().collect{ table ->
+    fun getCurrentTable() {
+        viewModelScope.launch {
+            getCurrentTableUseCase().collect { table ->
                 if (table != null) {
                     _uiState.update {
                         it.copy(currentTable = table)
@@ -69,7 +71,9 @@ class ChooseTableDialogViewModel @Inject constructor(
 
     fun saveTable(table: Table) {
         viewModelScope.launch {
-            saveTableUseCase(table = table)
+            saveTableUseCase(table = table).also {
+                searchNewOrdersUseCase(table = table)
+            }
         }
     }
 }

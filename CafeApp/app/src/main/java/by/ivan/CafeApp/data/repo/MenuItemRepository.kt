@@ -1,15 +1,12 @@
 package by.ivan.CafeApp.data.repo
 
-import android.content.Context
 import by.ivan.CafeApp.data.datasource.MenuItemLocalDatasource
 import by.ivan.CafeApp.data.datasource.MenuItemRemoteDatasource
 import by.ivan.CafeApp.data.local.entity.MenuItemLocalModel
 import by.ivan.CafeApp.data.local.entity.toLocalModel
 import by.ivan.CafeApp.data.remote.model.MenuItemRemoteModelList
 import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
-import by.ivan.CafeApp.domain.order.model.Order
 import com.haroldadmin.cnradapter.NetworkResponse
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
@@ -19,11 +16,10 @@ import javax.inject.Singleton
 class MenuItemRepository @Inject constructor(
     private val menuItemLocalDatasource: MenuItemLocalDatasource,
     private val menuItemRemoteDatasource: MenuItemRemoteDatasource,
-    private val tableVersionsRepository: TableVersionsRepository,
-    @ApplicationContext private val context: Context
+    private val tableVersionsRepository: TableVersionsRepository
 ) {
-    suspend fun getMenuItems(): Flow<List<MenuItemLocalModel>> {
-        return menuItemLocalDatasource.getMenuItems()
+    suspend fun getAll(): Flow<List<MenuItemLocalModel>> {
+        return menuItemLocalDatasource.getAll()
     }
 
     suspend fun searchNewMenuItem(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage> {
@@ -57,7 +53,7 @@ class MenuItemRepository @Inject constructor(
                 it.toLocalModel()
             }
 
-            val menuItems = menuItemLocalDatasource.getMenuItems().firstOrNull()
+            val menuItems = menuItemLocalDatasource.getAll().firstOrNull()
             if (menuItems?.count() != menuItemLocalModel.count()) {
                 menuItems?.forEach {
                     if (!menuItemLocalModel.contains(it)) {
@@ -89,20 +85,7 @@ class MenuItemRepository @Inject constructor(
         return menuItemLocalDatasource.getMenuItemsByCategoryId(categoryId)
     }
 
-    suspend fun getMenuItemById(id: Int): MenuItemLocalModel {
+    suspend fun getMenuItemById(id: Int): Flow<MenuItemLocalModel> {
         return menuItemLocalDatasource.getMenuItemById(id = id)
-    }
-
-    suspend fun getMenuItemsByOrderItemsIds(order: Order): List<MenuItemLocalModel> {
-        val menuItems: MutableList<MenuItemLocalModel> = mutableListOf()
-        order.orderDetails.menuItemsIdsText
-            .split(";")
-            .forEach {
-                menuItems.add(
-                    menuItemLocalDatasource.getMenuItemById(id = it.toInt())
-                )
-            }
-
-        return menuItems.toList()
     }
 }

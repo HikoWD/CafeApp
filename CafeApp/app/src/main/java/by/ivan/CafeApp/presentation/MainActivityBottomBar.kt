@@ -2,8 +2,8 @@ package by.ivan.CafeApp.presentation
 
 import android.support.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
@@ -103,7 +103,8 @@ private fun MainActivityBottomBar(
             val isCurrentDestination =
                 currentDestination?.hierarchy?.any { it.route == destination.graph.route } == true
 
-            NavigationBarItem( //BottomNavigationItem
+            NavigationBarItem(
+                //BottomNavigationItem
                 selected = isCurrentDestination,
                 onClick = {
                     navController.navigate(destination.graph) {

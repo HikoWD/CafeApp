@@ -1,6 +1,5 @@
 package by.ivan.CafeApp.data.repo
 
-import android.content.Context
 import by.ivan.CafeApp.data.datasource.OrderLocalDatasource
 import by.ivan.CafeApp.data.datasource.OrderRemoteDatasource
 import by.ivan.CafeApp.data.local.entity.OrderLocalModel
@@ -9,7 +8,6 @@ import by.ivan.CafeApp.data.remote.model.OrderRemoteModelList
 import by.ivan.CafeApp.data.remote.model.ResponseErrorMessage
 import by.ivan.CafeApp.domain.order.model.OrderDetails
 import com.haroldadmin.cnradapter.NetworkResponse
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,10 +15,9 @@ import javax.inject.Singleton
 @Singleton
 class OrderRepository @Inject constructor(
     private val orderLocalDatasource: OrderLocalDatasource,
-    private val orderRemoteDatasource: OrderRemoteDatasource,
-    @ApplicationContext private val context: Context
+    private val orderRemoteDatasource: OrderRemoteDatasource
 ) {
-    suspend fun getOrders(): Flow<List<OrderLocalModel>> {
+    suspend fun getAll(): Flow<List<OrderLocalModel>> {
         return orderLocalDatasource.getAll()
     }
 

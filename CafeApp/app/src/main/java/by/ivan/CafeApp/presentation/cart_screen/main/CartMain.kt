@@ -31,7 +31,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,10 +40,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +57,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import by.ivan.CafeApp.R
 import by.ivan.CafeApp.data.Constants
@@ -75,36 +75,30 @@ import kotlin.math.round
 @Composable
 fun CartMain(
     viewModel: CartScreenViewModel = hiltViewModel(),
+    cartItems: List<CartItem>,
+    isNotEmptyUiState: Boolean,
+    orderResult: Order,
+    errorResult: String,
+    orderPostState: OrderPostState,
     paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues,
     onNavigateOrderScreenSuccessScreen: (Order) -> Unit,
-    onGetCartItemsEffect: () -> Unit,
     onAddMenuItemToCartClick: (MenuItem) -> Unit,
     onRemoveMenuItemFromCartClick: (MenuItem) -> Unit,
     onPostOrderClick: () -> Unit,
+    onChangeStateToIdleEffect: () -> Unit,
 ) {
-    val state = viewModel.uiState.collectAsState()
-
     val localContext = LocalContext.current
 
-    //todo
-    DisposableEffect(Unit) {
-        val job = viewModel.getCartItems()
-
-        onDispose {
-            job.cancel()
-        }
-    }
-
     Crossfade(
-        targetState = state.value.orderPostState,
+        targetState = orderPostState,
         animationSpec = tween(
             durationMillis = 800,
             easing = LinearEasing
         ),
         label = ""
-    ) { orderPostState ->
-        when (orderPostState) {
+    ) { state ->
+        when (state) {
             OrderPostState.LOADING -> {
                 Box(
                     modifier = Modifier
@@ -113,16 +107,21 @@ fun CartMain(
                             indication = null, // disable ripple effect
                             interactionSource = remember { MutableInteractionSource() },
                             onClick = { }
-                        ), contentAlignment = Alignment.Center
+                        ),
                 ) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
 
             OrderPostState.POSTED -> {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(), contentAlignment = Alignment.Center
+                        .fillMaxSize()
+                        .zIndex(1f),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         modifier = Modifier.size(96.dp),
@@ -133,8 +132,8 @@ fun CartMain(
                 }
                 LaunchedEffect(Unit) {
                     delay(800L)
-                    onNavigateOrderScreenSuccessScreen(state.value.orderResult)
-                    viewModel.changeStateToIdle()
+                    onNavigateOrderScreenSuccessScreen(orderResult)
+                    onChangeStateToIdleEffect()
                 }
             }
 
@@ -151,10 +150,10 @@ fun CartMain(
                     )
                 }
                 LaunchedEffect(Unit) {
-                    Toast.makeText(localContext, state.value.errorResult, Toast.LENGTH_LONG)
+                    Toast.makeText(localContext, errorResult, Toast.LENGTH_LONG)
                         .show()
                     delay(1200L)
-                    viewModel.changeStateToIdle()
+                    onChangeStateToIdleEffect()
                 }
             }
 
@@ -163,10 +162,10 @@ fun CartMain(
     }
 
     CartMain(
-        cartItems = state.value.cartItems,
+        cartItems = cartItems,
         paddingValuesParent = paddingValuesParent,
         paddingValuesChild = paddingValuesChild,
-        isNotEmptyUiState = state.value.cartItems.isNotEmpty(),
+        isNotEmptyUiState = isNotEmptyUiState,
         onAddMenuItemToCartClick = onAddMenuItemToCartClick,
         onRemoveMenuItemFromCartClick = onRemoveMenuItemFromCartClick,
         onPostOrderClick = onPostOrderClick
@@ -185,12 +184,17 @@ private fun CartMain(
     onPostOrderClick: () -> Unit = {},
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = paddingValuesChild.calculateTopPadding(),
+                bottom = paddingValuesParent.calculateBottomPadding()
+            )
     ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 250.dp),
             contentPadding = PaddingValues(8.dp),
-            modifier = Modifier.weight(0.8f)
+            modifier = Modifier.weight(0.9f)
         ) {
             itemsIndexed(items = cartItems) { index, item ->
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -313,8 +317,7 @@ private fun CartMain(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.2f)
-                .padding(bottom = paddingValuesParent.calculateBottomPadding())
+                .weight(0.1f)
                 .shadow(
                     elevation = 14.dp,
                     clip = true,
@@ -327,7 +330,7 @@ private fun CartMain(
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background,
             ),
-            border = BorderStroke(0.dp, Color.LightGray),
+            border = BorderStroke(0.dp, Color.LightGray)
         ) {
             Box(
                 modifier = Modifier
@@ -349,9 +352,12 @@ private fun CartMain(
                     enabled = true
                 }
 
-                Button(
+                TextButton(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = isNotEmptyUiState && enabled,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
                     onClick = {
                         onPostOrderClick()
                         enabled = false
@@ -359,9 +365,11 @@ private fun CartMain(
                 ) {
                     Text(
                         text = "Оформить за ",
-                        color = Color.White,
-                        fontSize = 24.sp
+                        color = MaterialTheme.colorScheme.background,
+                        style = MaterialTheme.typography.titleLarge
                     )
+
+                    //on price change
                     AnimatedContent(
                         targetState = cartItems.sumOf { it.menuItem.price * it.count }
                             .roundTo(decimals = 1),
@@ -369,14 +377,15 @@ private fun CartMain(
                     ) { displayNumber ->
                         Text(
                             text = "${displayNumber} ",
-                            color = Color.White,
-                            fontSize = 24.sp
+                            color = MaterialTheme.colorScheme.background,
+                            style = MaterialTheme.typography.titleLarge
                         )
                     }
+
                     Text(
                         text = "руб.",
-                        color = Color.White,
-                        fontSize = 24.sp
+                        color = MaterialTheme.colorScheme.background,
+                        style = MaterialTheme.typography.titleLarge
                     )
                 }
             }

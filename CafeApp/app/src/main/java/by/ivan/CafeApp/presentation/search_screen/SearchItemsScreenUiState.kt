@@ -5,6 +5,6 @@ import by.ivan.CafeApp.domain.search_history.model.SearchHistoryItem
 
 data class SearchItemsScreenUiState(
     val menuItems: List<MenuItem> = listOf(),
-    val searchHistory: List<SearchHistoryItem> = listOf(),
+    val searchHistoryItems: List<SearchHistoryItem> = listOf(),
     val menuItemTitleForSearch: String = "",
 )

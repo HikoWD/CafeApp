@@ -8,6 +8,7 @@ import by.ivan.CafeApp.domain.menu.model.toDomain
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,14 +19,11 @@ class GetCartItemsUseCase @Inject constructor(
     private val menuItemRepository: MenuItemRepository
 ) {
     suspend operator fun invoke(): Flow<List<CartItem>> = withContext(Dispatchers.IO) {
-        return@withContext cartItemRepository.getAll().map { list ->
-            list.map {
-                val menuItemLocalModel = menuItemRepository.getMenuItemById(id = it.menuItemId)
+        return@withContext cartItemRepository.getAll().map { cartItemsLocalModel ->
+            cartItemsLocalModel.map {
+                val menuItemLocalModel =
+                    menuItemRepository.getMenuItemById(id = it.menuItemId).first()
                 it.toDomain(menuItem = menuItemLocalModel.toDomain())
-//                CartItem(
-//                    menuItem = menuItemLocalModel.toDomain(),
-//                    count = it.count
-//                )
             }
         }
     }

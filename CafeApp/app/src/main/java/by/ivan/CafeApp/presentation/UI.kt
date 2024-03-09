@@ -28,8 +28,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import by.ivan.CafeApp.R
-import by.ivan.CafeApp.presentation.chooseTable_dialog.ChooseTableDialog
-import by.ivan.CafeApp.presentation.login_dialog.LoginDialog
+import by.ivan.CafeApp.presentation.destinations.LoginDialogDestination
 import by.ivan.CafeApp.ui.theme.CafeAppTheme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -50,6 +47,7 @@ import com.ramcosta.composedestinations.animations.defaults.NestedNavGraphDefaul
 import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.dependency
+import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
@@ -71,28 +69,10 @@ fun UI(
         ) // all other nav graphs not specified in this map, will get their animations from the `rootDefaultAnimations` above.
     )
 
-    val showLoginDialog = remember { mutableStateOf(false) }
-    val showChooseTableDialog = remember { mutableStateOf(false) }
-
     val coroutineScope = rememberCoroutineScope()
 
-    if (showLoginDialog.value) {
-        LoginDialog(
-            showChooseTableDialogClick = { showChooseTableDialog.value = true },
-            onDismissRequest = { showLoginDialog.value = false }
-        )
-    }
-
-    if (showChooseTableDialog.value) {
-        ChooseTableDialog(
-            onDismissRequest = {
-                showChooseTableDialog.value = false
-            }
-        )
-    }
-
     val items = listOf(
-        DrawerItem.LoginButton(onClick = { showLoginDialog.value = true })
+        DrawerItem.LoginButton(onClick = { navController.navigate(LoginDialogDestination) })
     )
 
     CafeAppTheme {

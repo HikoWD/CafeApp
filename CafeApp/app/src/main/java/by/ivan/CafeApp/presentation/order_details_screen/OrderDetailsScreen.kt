@@ -60,9 +60,10 @@ fun OrderDetailsScreen(
     OrderDetailsScreen(
         viewModel = viewModel,
         menuItems = state.menuItems,
+        orderDetailsScreenState = state.orderDetailsScreenState,
         paddingValuesParent = paddingValuesParent,
         order = navArgs.order,
-        onNavigateToHistoryOrdersScreenClick = { navigator.navigateUp() }
+        onNavigateToHistoryOrdersScreenClick = { navigator.popBackStack() }
     )
 }
 
@@ -71,6 +72,7 @@ private fun OrderDetailsScreen(
     viewModel: OrderDetailsScreenViewModel,
     menuItems: List<MenuItem> = listOf(),
     order: Order? = Order(),
+    orderDetailsScreenState: OrderDetailsScreenState = OrderDetailsScreenState.Idle,
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onNavigateToHistoryOrdersScreenClick: () -> Unit = {},
 ) {
@@ -87,6 +89,7 @@ private fun OrderDetailsScreen(
             OrderDetailsMain(
                 viewModel = viewModel,
                 menuItems = menuItems,
+                orderDetailsScreenState = orderDetailsScreenState,
                 paddingValuesParent = paddingValuesParent,
                 paddingValuesChild = paddingValuesChild
             )

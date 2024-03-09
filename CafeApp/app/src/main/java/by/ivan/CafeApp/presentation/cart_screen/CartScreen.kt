@@ -4,12 +4,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import by.ivan.CafeApp.domain.cart.model.CartItem
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.order.model.Order
@@ -30,7 +30,7 @@ fun CartScreen(
     paddingValuesParent: PaddingValues,
     onMenuButtonClick: () -> Unit
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     CartScreen(
         viewModel = viewModel,
@@ -41,7 +41,7 @@ fun CartScreen(
         orderPostState = state.orderPostState,
         onNavigateOrderScreenSuccessScreen = { navigator.navigate(OrderSuccessScreenDestination(it)) },
         paddingValuesParent = paddingValuesParent,
-        onAddMenuItemToCartClick = { viewModel.addCartItem(menuItem = it) },
+        onAddMenuItemToCartClick = { viewModel.addMenuItemToCart(menuItem = it) },
         onRemoveMenuItemFromCartClick = {
             viewModel.decreaseCountCartItem(
                 menuItem = it

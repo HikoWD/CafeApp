@@ -2,14 +2,14 @@ package by.ivan.CafeApp.presentation
 
 import android.support.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ import com.ramcosta.composedestinations.navigation.navigate
 
 sealed class BottomNavItem(
     val graph: NavGraph,
-    val icon: @Composable () -> Unit, //ImageVector
+    val icon: @Composable () -> Unit,
     @StringRes val label: Int
 ) {
     object MenuItems : BottomNavItem(
@@ -97,14 +97,13 @@ private fun MainActivityBottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar(modifier = Modifier.fillMaxWidth()) {//BottomNavigation
+    NavigationBar(modifier = Modifier.fillMaxWidth()) {
         items.forEach { destination ->
 
             val isCurrentDestination =
                 currentDestination?.hierarchy?.any { it.route == destination.graph.route } == true
 
             NavigationBarItem(
-                //BottomNavigationItem
                 selected = isCurrentDestination,
                 onClick = {
                     navController.navigate(destination.graph) {

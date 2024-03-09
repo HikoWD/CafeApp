@@ -23,7 +23,6 @@ class OrderDetailsScreenViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(
                 orderDetailsScreenState = OrderDetailsScreenState.Loading
             )
-
             getMenuItemsByOrderItemsIdsUseCase(order = order).collect { menuItems ->
                 when {
                     menuItems.isEmpty() -> {

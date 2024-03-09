@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.ivan.CafeApp.domain.menu.usecase.GetMenuItemsByOrderItemsIdsUseCase
 import by.ivan.CafeApp.domain.order.model.Order
-import by.ivan.CafeApp.domain.order.usecase.SearchNewOrdersUseCase
+import by.ivan.CafeApp.domain.order.usecase.LoadOrdersByTableUseCase
 import by.ivan.CafeApp.domain.table.usecase.GetCurrentTableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class OrderSuccessScreenViewModel @Inject constructor(
     private val getMenuItemsByOrderItemsIdsUseCase: GetMenuItemsByOrderItemsIdsUseCase,
     private val currentTableUseCase: GetCurrentTableUseCase,
-    private val searchNewOrdersUseCase: SearchNewOrdersUseCase
+    private val loadOrdersByTableUseCase: LoadOrdersByTableUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OrderSuccessScreenUiState())
     val uiState: StateFlow<OrderSuccessScreenUiState> = _uiState
@@ -45,7 +45,7 @@ class OrderSuccessScreenViewModel @Inject constructor(
                             )
                         }.also {
                             currentTableUseCase().firstOrNull()?.let { table ->
-                                searchNewOrdersUseCase(table = table)
+                                loadOrdersByTableUseCase(table = table)
                             }
                         }
                     }

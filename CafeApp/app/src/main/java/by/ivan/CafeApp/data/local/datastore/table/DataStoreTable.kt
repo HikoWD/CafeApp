@@ -1,6 +1,7 @@
 package by.ivan.CafeApp.data.local.datastore.table
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -27,6 +28,7 @@ class DataStoreTable @Inject constructor(
     }
 
     val getCurrentTable: Flow<Table?> = context.dataStore.data.map {
+        Log.d("3333333333", "${it[tableId]}")
         Table(
             id = it[tableId] ?: -1,
             title = it[tableTitle] ?: "",

@@ -29,18 +29,16 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
 import by.ivan.CafeApp.R
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.domain.search_history.model.SearchHistoryItem
@@ -54,28 +52,31 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun SearchTopBar(
     viewModel: SearchItemsScreenViewModel = hiltViewModel(),
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     menuItems: List<MenuItem>,
+    isActiveSearchBar: Boolean,
     menuItemTitleForSearch: String,
     paddingValuesParent: PaddingValues,
     onClearMenuItemsClick: () -> Unit,
-    onGetMenuItemsByTitleUpdate: () -> Unit,
     onUpdateMenuItemTitleInput: (String) -> Unit,
     onClearMenuItemTitleForSearchClick: () -> Unit,
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit,
     onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit,
-    onMenuButtonClick: () -> Unit,
+    showSearchBar: (Boolean) -> Unit,
+    onMenuButtonClick: () -> Unit
 ) {
     SearchTopBar(
         menuItems = menuItems,
+        isActiveSearchBar = isActiveSearchBar,
         menuItemTitleForSearch = menuItemTitleForSearch,
         paddingValuesParent = paddingValuesParent,
         onClearMenuItemsClick = onClearMenuItemsClick,
-        onGetMenuItemsByTitleUpdate = onGetMenuItemsByTitleUpdate,
         onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
         onClearMenuItemTitleForSearchClick = onClearMenuItemTitleForSearchClick,
         onAddMenuItemToCartClick = onAddMenuItemToCartClick,
         onAddSearchHistoryItemEffect = onAddSearchHistoryItemEffect,
-        onMenuButtonClick = onMenuButtonClick,
+        showSearchBar = showSearchBar,
+        onMenuButtonClick = onMenuButtonClick
     )
 }
 
@@ -83,18 +84,17 @@ fun SearchTopBar(
 @Composable
 private fun SearchTopBar(
     menuItems: List<MenuItem>,
+    isActiveSearchBar: Boolean = false,
     menuItemTitleForSearch: String = "",
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onClearMenuItemsClick: () -> Unit = {},
-    onGetMenuItemsByTitleUpdate: () -> Unit = {},
     onUpdateMenuItemTitleInput: (String) -> Unit = {},
     onClearMenuItemTitleForSearchClick: () -> Unit = {},
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit = {},
     onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit = {},
-    onMenuButtonClick: () -> Unit = {},
+    showSearchBar: (Boolean) -> Unit = {},
+    onMenuButtonClick: () -> Unit = {}
 ) {
-    var isActive by rememberSaveable { mutableStateOf(false) }
-
     Box(
         Modifier
             .fillMaxWidth()
@@ -107,16 +107,17 @@ private fun SearchTopBar(
             modifier = Modifier
                 .align(Alignment.TopCenter),
             query = menuItemTitleForSearch,
-            onQueryChange = {
-                onUpdateMenuItemTitleInput(it)
-                onGetMenuItemsByTitleUpdate()
+            onQueryChange = { query ->
+                onUpdateMenuItemTitleInput(query)
             },
-            onSearch = { isActive = false },
-            active = isActive,
+            onSearch = { query ->
+                onUpdateMenuItemTitleInput(query)
+            },
+            active = isActiveSearchBar,
             onActiveChange = { activeChange ->
-                isActive = activeChange
+                showSearchBar(activeChange)
             },
-            placeholder = { Text("Введите название блюда") },
+            placeholder = { Text(text = "Введите название блюда") },
             leadingIcon = {
                 IconButton(onClick = {
                     onMenuButtonClick()

@@ -24,8 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -46,20 +44,19 @@ import coil.compose.AsyncImage
 fun OrderSuccessScreenMain(
     viewModel: OrderSuccessScreenViewModel = hiltViewModel(),
     menuItems: List<MenuItem>,
-    onNavigateToMenuItemsScreenClick: () -> Unit,
+    orderSuccessScreenState: OrderSuccessScreenState,
     paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues,
+    onNavigateToMenuItemsScreenClick: () -> Unit,
 ) {
     val localContext = LocalContext.current
-
-    val state by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Crossfade(
-            targetState = state.orderSuccessScreenState,
+            targetState = orderSuccessScreenState,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),

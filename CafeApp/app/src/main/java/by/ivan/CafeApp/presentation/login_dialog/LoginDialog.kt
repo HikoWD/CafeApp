@@ -16,10 +16,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,50 +32,53 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import by.ivan.CafeApp.presentation.destinations.ChooseTableDialogDestination
 import by.ivan.CafeApp.presentation.menu_screen.MenuItemsScreenViewModel
+import by.ivan.CafeApp.ui.components.dialog_style.DefaultDialogStyle
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination(style = DefaultDialogStyle::class)
 @Composable
 fun LoginDialog(
     viewModel: MenuItemsScreenViewModel = hiltViewModel(),
-    showChooseTableDialogClick: () -> Unit,
-    onDismissRequest: () -> Unit,
+    navigator: DestinationsNavigator,
 ) {
     LoginDialog(
-        showChooseTableDialogClick = showChooseTableDialogClick,
-        onDismissRequest = onDismissRequest,
+        onNavigateToChooseTableDialogClick = { navigator.navigate(ChooseTableDialogDestination) },
+        onDismissRequest = { navigator.popBackStack() }
     )
 }
 
 @Composable
 private fun LoginDialog(
-    showChooseTableDialogClick: () -> Unit = {},
+    onNavigateToChooseTableDialogClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {}
 ) {
     val pin = 1111 //TODO
 
-    val text = remember {
+    var text by remember {
         mutableStateOf("")
     }
 
-    val isVisibleErrorText = remember {
+    var isVisibleErrorText by remember {
         mutableStateOf(false)
     }
 
-    val passwordVisible = remember { mutableStateOf(false) }
-
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Dialog(
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(
-            usePlatformDefaultWidth = true,
+            usePlatformDefaultWidth = false,
             dismissOnClickOutside = false,
-            dismissOnBackPress = true
-        ),
+            dismissOnBackPress = false
+        )
     ) {
         Card(
             modifier = Modifier
                 .size(
-                    width = 400.dp,
+                    width = 350.dp,
                     height = 220.dp
                 )
                 .padding(16.dp),
@@ -96,12 +102,12 @@ private fun LoginDialog(
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 TextField(
-                    value = text.value,
-                    onValueChange = { text.value = it },
+                    value = text,
+                    onValueChange = { text = it },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                     singleLine = true,
                     visualTransformation =
-                    if (passwordVisible.value) VisualTransformation.None
+                    if (passwordVisible) VisualTransformation.None
                     else PasswordVisualTransformation(),
                     placeholder = {
                         Text(
@@ -110,13 +116,12 @@ private fun LoginDialog(
                         )
                     },
                 )
-                if (isVisibleErrorText.value) {
-                    Text(
-                        text = "Не правильный код",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Red
-                    )
-                }
+                Text(
+                    modifier = Modifier.alpha(if (isVisibleErrorText) 1f else 0f),
+                    text = "Не правильный код",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Red
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -139,12 +144,12 @@ private fun LoginDialog(
                         ),
                         onClick = {
                             //onConfirmation
-                            if (text.value.isNotEmpty() && pin == text.value.toInt()) {
+                            if (text.isNotEmpty() && pin == text.toInt()) {
                                 onDismissRequest()
-                                showChooseTableDialogClick()
-                                isVisibleErrorText.value = false
+                                onNavigateToChooseTableDialogClick()
+                                isVisibleErrorText = false
                             } else {
-                                isVisibleErrorText.value = true
+                                isVisibleErrorText = true
                             }
                         },
                         modifier = Modifier.padding(8.dp),

@@ -12,9 +12,9 @@ import javax.inject.Singleton
 
 @Singleton
 class OrderRemoteDatasource @Inject constructor(private val apiService: ApiService) {
-    suspend fun getOrdersByTable(tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage> =
+    suspend fun loadOrdersByTable(tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage> =
         withContext(Dispatchers.IO) {
-            return@withContext apiService.getOrdersByTable(tableId = tableId)
+            return@withContext apiService.loadOrdersByTable(tableId = tableId)
         }
 
     suspend fun getOrderDetailsById(orderDetailsId: Int): OrderDetailsRemoteModel =

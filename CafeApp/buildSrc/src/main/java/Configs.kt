@@ -12,11 +12,11 @@ object Configs {
 
     val VersionName: String get() = "$versionMajor.$versionMinor.${versionPatch}"
 
-    const val MinSdk = 23
+    const val MinSdk = 26 //23
 
-    const val TargetSdk = 33
+    const val TargetSdk = 34
 
-    const val CompileSdk = 33
+    const val CompileSdk = 34
 
     const val AndroidJunitRunner = "androidx.test.runner.AndroidJUnitRunner"
 

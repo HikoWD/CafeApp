@@ -9,7 +9,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
-import java.util.*
+import java.util.Properties
 
 fun Project.configureKotlinCompile() {
     project.tasks.withType<KotlinCompile>().configureEach {

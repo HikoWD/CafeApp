@@ -1,5 +1,7 @@
 package codeanalyzetools
 
+import Dependencies
+import Versions
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
@@ -28,9 +30,9 @@ dependencies {
 tasks.withType<Detekt>().configureEach {
     reports {
         html.required.set(true)
-        html.outputLocation.set(file("${project.buildDir}/build/reports/detekt/detekt-report.html"))
+        html.outputLocation.set(file("${rootProject.layout.buildDirectory}/build/reports/detekt/detekt-report.html")) //project.buildDir
         xml.required.set(true)
-        xml.outputLocation.set(file("${project.buildDir}/build/reports/detekt/detekt-report.xml"))
+        xml.outputLocation.set(file("${rootProject.layout.buildDirectory}/build/reports/detekt/detekt-report.xml")) //project.buildDir
     }
 }
 

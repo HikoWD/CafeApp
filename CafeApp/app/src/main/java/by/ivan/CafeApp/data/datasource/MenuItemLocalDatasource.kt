@@ -19,7 +19,7 @@ class MenuItemLocalDatasource @Inject constructor(private val menuItemDao: MenuI
             return@withContext menuItemDao.saveMenuItems(menuItemLocalModel)
         }
 
-    suspend fun getMenuItemsByTitle(title: String): Flow<List<MenuItemLocalModel>> =
+    suspend fun getMenuItemsByTitle(title: String): List<MenuItemLocalModel> =
         withContext(Dispatchers.IO) {
             return@withContext menuItemDao.getByTitle(title)
         }

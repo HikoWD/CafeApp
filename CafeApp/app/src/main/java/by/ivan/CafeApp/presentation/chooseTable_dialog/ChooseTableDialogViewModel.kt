@@ -2,15 +2,14 @@ package by.ivan.CafeApp.presentation.chooseTable_dialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import by.ivan.CafeApp.domain.order.usecase.SearchNewOrdersUseCase
+import by.ivan.CafeApp.domain.order.usecase.LoadOrdersByTableUseCase
 import by.ivan.CafeApp.domain.result.CompletableResult
 import by.ivan.CafeApp.domain.table.model.Table
 import by.ivan.CafeApp.domain.table.usecase.GetCurrentTableUseCase
 import by.ivan.CafeApp.domain.table.usecase.GetTablesUseCase
+import by.ivan.CafeApp.domain.table.usecase.LoadTablesUseCase
 import by.ivan.CafeApp.domain.table.usecase.SaveTableUseCase
-import by.ivan.CafeApp.domain.table.usecase.SearchNewTablesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -20,18 +19,23 @@ import javax.inject.Inject
 @HiltViewModel
 class ChooseTableDialogViewModel @Inject constructor(
     private val getTablesUseCase: GetTablesUseCase,
-    private val searchNewTablesUseCase: SearchNewTablesUseCase,
+    private val loadTablesUseCase: LoadTablesUseCase,
     private val getCurrentTableUseCase: GetCurrentTableUseCase,
     private val saveTableUseCase: SaveTableUseCase,
-    private val searchNewOrdersUseCase: SearchNewOrdersUseCase
+    private val loadOrdersByTableUseCase: LoadOrdersByTableUseCase
+    //todo если вызвать ChooseTableDialog в истории - удаляются заказы
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ChooseTableDialogUiState())
     val uiState: StateFlow<ChooseTableDialogUiState> = _uiState
 
-    fun searchNewTable(): Job {
-        return viewModelScope.launch {
+    init {
+        loadTables()
+    }
+
+    fun loadTables() {
+        viewModelScope.launch {
             _uiState.value = _uiState.value.copy(tableDialogState = TableDialogState.Loading)
-            when (val result = searchNewTablesUseCase()) {
+            when (val result = loadTablesUseCase()) {
                 is CompletableResult.Success -> {
                     _uiState.value = _uiState.value.copy(tableDialogState = TableDialogState.Loaded)
                 }
@@ -48,7 +52,6 @@ class ChooseTableDialogViewModel @Inject constructor(
 
     fun getTables() {
         viewModelScope.launch {
-            searchNewTable().join()
             getTablesUseCase().collect { tables ->
                 _uiState.update {
                     it.copy(tables = tables)
@@ -64,6 +67,7 @@ class ChooseTableDialogViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(currentTable = table)
                     }
+                        //.also { searchNewOrdersUseCase(table) } //todo ошибка выше
                 }
             }
         }
@@ -72,7 +76,7 @@ class ChooseTableDialogViewModel @Inject constructor(
     fun saveTable(table: Table) {
         viewModelScope.launch {
             saveTableUseCase(table = table).also {
-                searchNewOrdersUseCase(table = table)
+                loadOrdersByTableUseCase(table = table)
             }
         }
     }

@@ -32,15 +32,15 @@ fun SearchItemsMain(
     searchHistoryItems: List<SearchHistoryItem>,
     paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues,
-    onGetMenuItemsByTitleUpdate: () -> Unit,
-    onUpdateMenuItemTitleInput: (String) -> Unit,
+    showSearchBar: (Boolean) -> Unit,
+    onUpdateMenuItemTitleInput: (String) -> Unit
 ) {
     SearchItemsMain(
         searchHistoryItems = searchHistoryItems,
-        onGetMenuItemsByTitleUpdate = onGetMenuItemsByTitleUpdate,
-        onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
         paddingValuesParent = paddingValuesParent,
-        paddingValuesChild = paddingValuesChild
+        paddingValuesChild = paddingValuesChild,
+        onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
+        showSearchBar = showSearchBar
     )
 }
 
@@ -49,8 +49,8 @@ private fun SearchItemsMain(
     searchHistoryItems: List<SearchHistoryItem> = listOf(),
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     paddingValuesChild: PaddingValues = PaddingValues(2.dp),
-    onGetMenuItemsByTitleUpdate: () -> Unit = {},
-    onUpdateMenuItemTitleInput: (String) -> Unit = {},
+    showSearchBar: (Boolean) -> Unit = {},
+    onUpdateMenuItemTitleInput: (String) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier
@@ -72,7 +72,7 @@ private fun SearchItemsMain(
                     )
                     .clickable {
                         onUpdateMenuItemTitleInput(item.query)
-                        onGetMenuItemsByTitleUpdate()
+                        showSearchBar(true)
                     },
                 shape = RoundedCornerShape(20.dp),
                 elevation = CardDefaults.cardElevation(

@@ -22,8 +22,8 @@ class MenuItemRepository @Inject constructor(
         return menuItemLocalDatasource.getAll()
     }
 
-    suspend fun searchNewMenuItem(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage> {
-        val result = menuItemRemoteDatasource.getMenuItems()
+    suspend fun loadMenuItems(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage> {
+        val result = menuItemRemoteDatasource.loadMenuItems()
         if (result is NetworkResponse.Success) {
             insertData(menuItemsRemote = result.body.items)
         }
@@ -73,16 +73,8 @@ class MenuItemRepository @Inject constructor(
         return menuItemLocalDatasource.getMenuItemsByCategoryId(categoryId = id)
     }
 
-    suspend fun getMenuItemByTitle(title: String): Flow<List<MenuItemLocalModel>> {
+    suspend fun getMenuItemByTitle(title: String): List<MenuItemLocalModel> {
         return menuItemLocalDatasource.getMenuItemsByTitle(title = title)
-    }
-
-    suspend fun getMenuItemsSortedByAlphabet(categoryId: Int): Flow<List<MenuItemLocalModel>> {
-        return menuItemLocalDatasource.getMenuItemsByCategoryId(categoryId = categoryId)
-    }
-
-    suspend fun getMenuItemsSortedByPrice(categoryId: Int): Flow<List<MenuItemLocalModel>> {
-        return menuItemLocalDatasource.getMenuItemsByCategoryId(categoryId)
     }
 
     suspend fun getMenuItemById(id: Int): Flow<MenuItemLocalModel> {

@@ -10,11 +10,12 @@ tasks.named<Wrapper>("wrapper") {
 }
 
 buildscript {
-    val kotlin_version by extra("1.8.20")
+    val kotlin_version by extra("1.9.22")
     dependencies {
-        classpath("com.google.gms:google-services:4.3.3")
+        classpath("com.google.gms:google-services:4.4.1") //4.3.3
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
+
     repositories {
         mavenCentral()
     }

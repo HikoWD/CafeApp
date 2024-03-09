@@ -34,15 +34,16 @@ fun SearchItemsScreen(
     SearchItemsScreen(
         viewModel = viewModel,
         menuItems = state.menuItems,
-        paddingValuesParent = paddingValuesParent,
+        isActiveSearchBar = state.isActiveSearchBar,
         searchHistoryItems = state.searchHistoryItems,
         menuItemTitleForSearch = state.menuItemTitleForSearch,
+        paddingValuesParent = paddingValuesParent,
         onClearMenuItemsClick = { viewModel.clearMenuItems() },
-        onGetMenuItemsByTitleUpdate = { viewModel.getMenuItemsByTitle() },
         onUpdateMenuItemTitleInput = { viewModel.updateMenuItemTitleForSearch(it) },
         onClearMenuItemTitleForSearchClick = { viewModel.clearMenuItemTitleForSearch() },
-        onAddMenuItemToCartClick = { viewModel.addMenuItemToCart(menuItem = it) },
+        onAddMenuItemToCartClick = { viewModel.addMenuItemToCart(it) },
         onAddSearchHistoryItemEffect = { viewModel.addSearchHistoryItem(it) },
+        showSearchBar = { viewModel.showSearchBar(it) },
         onMenuButtonClick = onMenuButtonClick
     )
 }
@@ -51,15 +52,16 @@ fun SearchItemsScreen(
 private fun SearchItemsScreen(
     viewModel: SearchItemsScreenViewModel,
     menuItemTitleForSearch: String = "",
-    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
+    isActiveSearchBar: Boolean = false,
     menuItems: List<MenuItem> = listOf(),
     searchHistoryItems: List<SearchHistoryItem> = listOf(),
+    paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onClearMenuItemsClick: () -> Unit = {},
-    onGetMenuItemsByTitleUpdate: () -> Unit = {},
     onUpdateMenuItemTitleInput: (String) -> Unit = {},
     onClearMenuItemTitleForSearchClick: () -> Unit = {},
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit = {},
     onAddSearchHistoryItemEffect: (SearchHistoryItem) -> Unit = {},
+    showSearchBar: (Boolean) -> Unit = {},
     onMenuButtonClick: () -> Unit = {}
 ) {
     Scaffold(
@@ -68,25 +70,26 @@ private fun SearchItemsScreen(
             SearchTopBar(
                 viewModel = viewModel,
                 menuItems = menuItems,
+                isActiveSearchBar = isActiveSearchBar,
                 menuItemTitleForSearch = menuItemTitleForSearch,
                 paddingValuesParent = paddingValuesParent,
                 onClearMenuItemsClick = onClearMenuItemsClick,
-                onGetMenuItemsByTitleUpdate = onGetMenuItemsByTitleUpdate,
                 onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
                 onClearMenuItemTitleForSearchClick = onClearMenuItemTitleForSearchClick,
                 onAddMenuItemToCartClick = onAddMenuItemToCartClick,
                 onAddSearchHistoryItemEffect = onAddSearchHistoryItemEffect,
-                onMenuButtonClick = onMenuButtonClick,
+                showSearchBar = showSearchBar,
+                onMenuButtonClick = onMenuButtonClick
             )
         },
         content = { paddingValuesChild ->
             SearchItemsMain(
                 viewModel = viewModel,
                 searchHistoryItems = searchHistoryItems,
-                onGetMenuItemsByTitleUpdate = onGetMenuItemsByTitleUpdate,
-                onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
                 paddingValuesParent = paddingValuesParent,
-                paddingValuesChild = paddingValuesChild
+                paddingValuesChild = paddingValuesChild,
+                onUpdateMenuItemTitleInput = onUpdateMenuItemTitleInput,
+                showSearchBar = showSearchBar
             )
         }
     )

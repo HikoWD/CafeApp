@@ -1,10 +1,8 @@
-
 import extensions.androidTestImplementation
 import extensions.configureDefaultConfig
 import extensions.configureKotlinCompile
 import extensions.debugImplementation
 import extensions.implementation
-import extensions.kapt
 import extensions.setCompileOptions
 import extensions.setSigningConfigs
 import extensions.testImplementation
@@ -21,7 +19,7 @@ plugins {
 //    id("com.google.gms.google-services")
     id(GradlePlugins.JACOCO)
     id(GradlePlugins.JACOCO_REPORT)
-    id("com.google.devtools.ksp") version "1.8.20-1.0.11"
+    id("com.google.devtools.ksp") version "1.9.22-1.0.17" //1.8.20-1.0.11 //1.9.0-1.0.12
 }
 
 kotlin {
@@ -34,6 +32,7 @@ kotlin {
 }
 
 android {
+    namespace = Configs.Id //without it "com.android.tools.build:gradle:8.2.2" doesnt work
     compileSdk = Configs.CompileSdk
     configureDefaultConfig(project)
     setCompileOptions()
@@ -41,7 +40,10 @@ android {
     setSigningConfigs(project)
 
     defaultConfig {
-        setProperty("archivesBaseName", defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + "cafe-app") //test-app
+        setProperty(
+            "archivesBaseName",
+            defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + "cafe-app"
+        ) //test-app
     }
 
     buildFeatures.apply {
@@ -72,11 +74,11 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.5.10" //"1.5.1"
     }
 
     jacoco {
-        buildToolsVersion("0.8.5")
+        buildToolsVersion("0.8.11") //0.8.5
     }
 
     testOptions {
@@ -85,11 +87,8 @@ android {
     }
 
     dependencies {
-        implementation("io.github.raamcosta.compose-destinations:animations-core:1.8.42-beta")
-        ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
+        implementation("com.google.devtools.ksp:symbol-processing-api:1.9.22-1.0.17")
 
-        implementation("androidx.datastore:datastore-preferences:1.0.0")
-        implementation("io.coil-kt:coil-compose:2.3.0") //asyncImage
         implementation(Dependencies.Compose.MaterialV1)
         implementation(Dependencies.Compose.ComposeAnimatedNavigation)
         implementation(Dependencies.Compose.MaterialV3)
@@ -126,12 +125,12 @@ android {
         implementation(Dependencies.Kotlin.Stdlib)
         implementation(Dependencies.Kotlin.Annotation)
 
-        kapt(Dependencies.DI.HiltCompiler)
+        kapt(Dependencies.DI.HiltCompiler) //kapt -> ksp - error
         implementation(Dependencies.DI.HiltAndroid)
         implementation(Dependencies.DI.HiltNavFr)
         implementation(Dependencies.DI.HiltNavCompose)
 
-        kapt(Dependencies.Room.Compiler)
+        ksp(Dependencies.Room.Compiler)
         implementation(Dependencies.Room.Runtime)
         implementation(Dependencies.Room.Ktx)
 
@@ -198,9 +197,18 @@ android {
 }
 dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0") //2.5.1
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0") //2.5.1
+    //implementation("androidx.core:core-ktx:1.7.0")
+
+    implementation("io.github.raamcosta.compose-destinations:animations-core:1.10.1") //1.9.63 //1.8.42-beta
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.10.1")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    implementation("io.coil-kt:coil-compose:2.6.0") //asyncImage //2.3.0
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 }
 
 

@@ -1,5 +1,6 @@
 package by.ivan.CafeApp.presentation.cart_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.ivan.CafeApp.domain.cart.usecase.AddMenuItemToCartUseCase
@@ -28,10 +29,13 @@ class CartScreenViewModel @Inject constructor(
     val uiState: StateFlow<CartScreenUiState> = _uiState
 
     init {
+        Log.d("3333333333", "init cart")
         getCartItems()
     }
+
     fun getCartItems() {
-         viewModelScope.launch {
+        viewModelScope.launch {
+            Log.d("3333333333", "cart")
             getCartItemsUseCase().collect { cartItems ->
                 _uiState.update {
                     it.copy(cartItems = cartItems)
@@ -40,7 +44,7 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun addCartItem(menuItem: MenuItem) {
+    fun addMenuItemToCart(menuItem: MenuItem) {
         viewModelScope.launch {
             addMenuItemToCartUseCase(menuItem = menuItem)
         }
@@ -68,7 +72,7 @@ class CartScreenViewModel @Inject constructor(
                             orderResult = result.order,
                             orderPostState = OrderPostState.POSTED
                         )
-                    //removeCartItems() //todo
+                        removeCartItems()
                     }
                 }
 

@@ -62,10 +62,9 @@ fun OrderSuccessScreen(
         viewModel = viewModel,
         menuItems = state.menuItems,
         order = navArgs.order,
+        orderSuccessScreenState = state.orderSuccessScreenState,
         paddingValuesParent = paddingValuesParent,
-        onNavigateToMenuItemsScreenClick = {
-            navigator.navigate(NavGraphs.menu)
-        }
+        onNavigateToMenuItemsScreenClick = { navigator.navigate(NavGraphs.menu) }
     )
 }
 
@@ -74,6 +73,7 @@ private fun OrderSuccessScreen(
     viewModel: OrderSuccessScreenViewModel,
     menuItems: List<MenuItem> = listOf(),
     order: Order? = Order(),
+    orderSuccessScreenState: OrderSuccessScreenState = OrderSuccessScreenState.Idle,
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
     onNavigateToMenuItemsScreenClick: () -> Unit,
 ) {
@@ -84,6 +84,7 @@ private fun OrderSuccessScreen(
             OrderSuccessScreenMain(
                 viewModel = viewModel,
                 menuItems = menuItems,
+                orderSuccessScreenState = orderSuccessScreenState,
                 paddingValuesParent = paddingValuesParent,
                 paddingValuesChild = paddingValuesChild,
                 onNavigateToMenuItemsScreenClick = onNavigateToMenuItemsScreenClick,

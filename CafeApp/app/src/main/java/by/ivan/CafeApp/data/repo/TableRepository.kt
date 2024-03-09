@@ -23,8 +23,8 @@ class TableRepository @Inject constructor(
         return tableLocalDatasource.observeAll()
     }
 
-    suspend fun searchNewTable(): NetworkResponse<TableRemoteModelList, ResponseErrorMessage> {
-        val result = tableRemoteDatasource.getTables()
+    suspend fun loadTables(): NetworkResponse<TableRemoteModelList, ResponseErrorMessage> {
+        val result = tableRemoteDatasource.loadTables()
         if (result is NetworkResponse.Success) {
             insertData(tablesRemote = result.body.items)
         }

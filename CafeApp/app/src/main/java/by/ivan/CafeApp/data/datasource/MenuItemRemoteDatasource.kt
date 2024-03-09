@@ -11,8 +11,8 @@ import javax.inject.Singleton
 
 @Singleton
 class MenuItemRemoteDatasource @Inject constructor(private val apiService: ApiService) {
-    suspend fun getMenuItems(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage> =
+    suspend fun loadMenuItems(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage> =
         withContext(Dispatchers.IO) {
-            return@withContext apiService.getMenuItems()
+            return@withContext apiService.loadMenuItems()
         }
 }

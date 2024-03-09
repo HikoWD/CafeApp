@@ -7,4 +7,5 @@ data class SearchItemsScreenUiState(
     val menuItems: List<MenuItem> = listOf(),
     val searchHistoryItems: List<SearchHistoryItem> = listOf(),
     val menuItemTitleForSearch: String = "",
+    val isActiveSearchBar: Boolean = false
 )

@@ -9,19 +9,19 @@ import retrofit2.http.*
 
 interface ApiService {
     @GET("/api/category")
-    suspend fun getCategories(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage>
+    suspend fun loadCategories(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage>
 
     @GET("/api/table")
-    suspend fun getTables(): NetworkResponse<TableRemoteModelList, ResponseErrorMessage>
+    suspend fun loadTables(): NetworkResponse<TableRemoteModelList, ResponseErrorMessage>
 
     @GET("/api/menuitem")
-    suspend fun getMenuItems(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage>
+    suspend fun loadMenuItems(): NetworkResponse<MenuItemRemoteModelList, ResponseErrorMessage>
 
     @GET("/api/version")
-    suspend fun getTableVersions(): TableVersionRemoteModelList
+    suspend fun loadTableVersions(): TableVersionRemoteModelList
 
     @GET("/api/order/table/{id}")
-    suspend fun getOrdersByTable(@Path("id") tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage>
+    suspend fun loadOrdersByTable(@Path("id") tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage>
 
     @GET("/api/order/table/{id}")
     suspend fun getOrderDetailsById(@Path("id") orderDetailsId: Int): OrderDetailsRemoteModel

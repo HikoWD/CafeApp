@@ -23,8 +23,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -42,19 +40,18 @@ import coil.compose.AsyncImage
 fun OrderDetailsMain(
     viewModel: OrderDetailsScreenViewModel = hiltViewModel(),
     menuItems: List<MenuItem>,
+    orderDetailsScreenState: OrderDetailsScreenState,
     paddingValuesParent: PaddingValues,
     paddingValuesChild: PaddingValues
 ) {
     val localContext = LocalContext.current
-
-    val state by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Crossfade(
-            targetState = state.orderDetailsScreenState,
+            targetState = orderDetailsScreenState,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),

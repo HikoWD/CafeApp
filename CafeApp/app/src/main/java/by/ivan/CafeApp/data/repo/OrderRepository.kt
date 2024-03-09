@@ -21,8 +21,8 @@ class OrderRepository @Inject constructor(
         return orderLocalDatasource.getAll()
     }
 
-    suspend fun searchNewOrder(tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage> {
-        val result = orderRemoteDatasource.getOrdersByTable(tableId = tableId)
+    suspend fun loadOrdersByTable(tableId: Int): NetworkResponse<OrderRemoteModelList, ResponseErrorMessage> {
+        val result = orderRemoteDatasource.loadOrdersByTable(tableId = tableId)
         if (result is NetworkResponse.Success) {
             insertData(orders = result.body.items)
         }

@@ -24,8 +24,8 @@ class CategoryRepository @Inject constructor(
         return categoryLocalDatasource.getAll()
     }
 
-    suspend fun searchNewCategory(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage> {
-        val result = categoryRemoteDatasource.getCategories()
+    suspend fun loadCategories(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage> {
+        val result = categoryRemoteDatasource.loadCategories()
         if (result is NetworkResponse.Success) {
             insertData(categoriesRemote = result.body.items)
         }

@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import by.ivan.CafeApp.domain.category.usecase.SearchNewCategoryUseCase
-import by.ivan.CafeApp.domain.menu.usecase.SearchNewMenuItemUseCase
+import by.ivan.CafeApp.domain.category.usecase.LoadCategoriesUseCase
+import by.ivan.CafeApp.domain.menu.usecase.LoadMenuItemsUseCase
 import javax.inject.Inject
 
 class DatabaseWorkerFactory @Inject constructor(
-    private val searchNewCategoryUseCase: SearchNewCategoryUseCase,
-    private val searchNewMenuItemUseCase: SearchNewMenuItemUseCase,
+    private val loadCategoriesUseCase: LoadCategoriesUseCase,
+    private val loadMenuItemsUseCase: LoadMenuItemsUseCase,
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -19,7 +19,7 @@ class DatabaseWorkerFactory @Inject constructor(
     ): CoroutineWorker = DatabaseWorker(
         appContext,
         workerParameters,
-        searchNewCategoryUseCase,
-        searchNewMenuItemUseCase,
+        loadCategoriesUseCase,
+        loadMenuItemsUseCase,
     )
 }

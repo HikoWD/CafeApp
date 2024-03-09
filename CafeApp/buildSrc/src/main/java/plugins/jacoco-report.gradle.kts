@@ -33,7 +33,7 @@ tasks.withType<Test> {
 }
 
 
-val classDirectoriesTree = fileTree(project.buildDir) {
+val classDirectoriesTree = fileTree(rootProject.layout.buildDirectory) { //project.buildDir
     include(
         "**/classes/**/main/**",
         "**/intermediates/classes/debug/**",
@@ -44,7 +44,7 @@ val classDirectoriesTree = fileTree(project.buildDir) {
     exclude(fileFilter)
 }
 
-val sourceDirectoriesTree = fileTree("${project.buildDir}") {
+val sourceDirectoriesTree = fileTree("${rootProject.layout.buildDirectory}") { //project.buildDir
     include(
         "src/main/java/**",
         "src/main/kotlin/**",
@@ -54,7 +54,7 @@ val sourceDirectoriesTree = fileTree("${project.buildDir}") {
 //    exclude(fileFilter)
 }
 
-val executionDataTree = fileTree(project.buildDir) {
+val executionDataTree = fileTree(rootProject.layout.buildDirectory) { //project.buildDir
     include(
         "outputs/code_coverage/**/*.ec",
         "jacoco/jacocoTestReportDebug.exec",
@@ -65,10 +65,14 @@ val executionDataTree = fileTree(project.buildDir) {
 }
 
 fun JacocoReportsContainer.reports() {
-    xml.isEnabled = true
-    html.isEnabled = true
-    xml.destination = file("${buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
-    html.destination = file("${buildDir}/reports/jacoco/jacocoTestReport/html")
+    xml.required.set(true)
+    html.required.set(true)
+    xml.outputLocation = file("${layout.buildDirectory}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+    html.outputLocation = file("${layout.buildDirectory}/reports/jacoco/jacocoTestReport/html")
+//    xml.isEnabled = true
+//    html.isEnabled = true
+//    xml.destination = file("${buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+//    html.destination = file("${buildDir}/reports/jacoco/jacocoTestReport/html")
 }
 
 fun JacocoCoverageVerification.setDirectories() {
@@ -85,31 +89,31 @@ fun JacocoReport.setDirectories() {
 
 //if (tasks.findByName("jacocoAndroidTestReport") == null) {
 
-    tasks.register<JacocoReport>("jacocoAndroidTestReport") {
-        group = BuildTaskGroups.VERIFICATION
-        description = "Code coverage report for both Android and Unit tests."
-        dependsOn("testDebugUnitTest", "createDebugCoverageReport")
-        reports {
-            reports()
-        }
-        setDirectories()
+tasks.register<JacocoReport>("jacocoAndroidTestReport") {
+    group = BuildTaskGroups.VERIFICATION
+    description = "Code coverage report for both Android and Unit tests."
+    dependsOn("testDebugUnitTest", "createDebugCoverageReport")
+    reports {
+        reports()
     }
+    setDirectories()
+}
 //}
 
 //if (tasks.findByName("jacocoAndroidCoverageVerification") == null) {
-    tasks.register<JacocoCoverageVerification>("jacocoAndroidCoverageVerification") {
-        group = BuildTaskGroups.VERIFICATION
-        description = "Code coverage verification for Android both Android and Unit tests."
-        dependsOn("testDebugUnitTest", "createDebugCoverageReport")
-        violationRules {
-            rule {
-                limit {
-                    counter = "INSTRUCTIONAL"
-                    value = "COVEREDRATIO"
-                    minimum = "0.5".toBigDecimal()
-                }
+tasks.register<JacocoCoverageVerification>("jacocoAndroidCoverageVerification") {
+    group = BuildTaskGroups.VERIFICATION
+    description = "Code coverage verification for Android both Android and Unit tests."
+    dependsOn("testDebugUnitTest", "createDebugCoverageReport")
+    violationRules {
+        rule {
+            limit {
+                counter = "INSTRUCTIONAL"
+                value = "COVEREDRATIO"
+                minimum = "0.5".toBigDecimal()
             }
         }
-        setDirectories()
     }
+    setDirectories()
+}
 //}

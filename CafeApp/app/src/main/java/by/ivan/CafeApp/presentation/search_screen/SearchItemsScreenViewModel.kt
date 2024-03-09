@@ -11,6 +11,7 @@ import by.ivan.CafeApp.domain.search_history.usecase.GetAllSearchHistoryItemsUse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,24 +27,28 @@ class SearchItemsScreenViewModel @Inject constructor(
     val uiState: StateFlow<SearchItemsScreenUiState> = _uiState
 
     init {
+        viewModelScope.launch {
+            _uiState
+                .filter { it.menuItemTitleForSearch.isNotBlank() }
+                .collect { getMenuItemsByTitle(title = it.menuItemTitleForSearch) }
+        }
         getAllSearchHistoryItems()
     }
 
-    fun getMenuItemsByTitle() {
+    private fun getMenuItemsByTitle(title: String) {
         viewModelScope.launch {
-            getMenuItemsByTitleUseCase(title = _uiState.value.menuItemTitleForSearch).collect { menuItems ->
-                _uiState.update {
-                    it.copy(menuItems = menuItems)
-                }
+            val menuItems = getMenuItemsByTitleUseCase(title = title)
+            _uiState.update {
+                it.copy(menuItems = menuItems)
             }
         }
     }
 
-    fun getAllSearchHistoryItems() {
+    private fun getAllSearchHistoryItems() {
         viewModelScope.launch {
-            getAllSearchHistoryItemsUseCase().collect { items ->
+            getAllSearchHistoryItemsUseCase().collect { historyItems ->
                 _uiState.update {
-                    it.copy(searchHistoryItems = items)
+                    it.copy(searchHistoryItems = historyItems)
                 }
             }
         }
@@ -82,6 +87,12 @@ class SearchItemsScreenViewModel @Inject constructor(
             _uiState.update {
                 it.copy(menuItems = listOf())
             }
+        }
+    }
+
+    fun showSearchBar(show: Boolean) {
+        _uiState.update {
+            it.copy(isActiveSearchBar = show)
         }
     }
 }

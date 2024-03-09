@@ -1,25 +1,23 @@
 package by.ivan.CafeApp.presentation.chooseTable_dialog
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,10 +29,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -44,12 +41,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import by.ivan.CafeApp.domain.table.model.Table
+import by.ivan.CafeApp.presentation.chooseTable_dialog.main.ChooseTableDialogMain
+import by.ivan.CafeApp.ui.components.dialog_style.DefaultDialogStyle
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination(style = DefaultDialogStyle::class)
 @Composable
 fun ChooseTableDialog(
     viewModel: ChooseTableDialogViewModel = hiltViewModel(),
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onDismissRequest: () -> Unit,
+    localContext: Context = LocalContext.current,
+    navigator: DestinationsNavigator,
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -73,24 +76,26 @@ fun ChooseTableDialog(
     }
 
     ChooseTableDialog(
+        localContext = localContext,
         tables = state.tables,
         currentTable = state.currentTable,
-        onSaveTableClick = { viewModel.saveTable(it)},
-        onDismissRequest = onDismissRequest,
+        tableDialogState = state.tableDialogState,
+        onSaveTableClick = { viewModel.saveTable(it) },
+        onDismissRequest = { navigator.popBackStack() },
     )
 }
 
 @Composable
 private fun ChooseTableDialog(
-    tables: List<Table>,
+    localContext: Context,
+    tables: List<Table> = listOf(),
     currentTable: Table = Table(),
+    tableDialogState: TableDialogState = TableDialogState.Idle,
     onSaveTableClick: (Table) -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
     Dialog(
-        onDismissRequest = {
-            onDismissRequest()
-        },
+        onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(
             usePlatformDefaultWidth = false,
             dismissOnClickOutside = false,
@@ -143,94 +148,46 @@ private fun ChooseTableDialog(
                         }
                     }
                 }
-                Column(
+
+                Crossfade(
+                    targetState = tableDialogState,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1.5f)
-                        .padding(4.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                    ) {
-                        Text(
-                            modifier = Modifier.background(Color.Green),
-                            text = "   ",
-                            textAlign = TextAlign.Left
-                        )
-                        Text(
-                            text = " - текущий столик",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                    ) {
-                        Text(
-                            modifier = Modifier.background(Color.Red),
-                            text = "   ",
-                            textAlign = TextAlign.Left
-                        )
-                        Text(
-                            text = " - свободные столики",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                }
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(7.5f),
-                    columns = GridCells.Adaptive(minSize = 100.dp),
-                    contentPadding = PaddingValues(
-                        start = 12.dp,
-                        top = 16.dp,
-                        end = 12.dp,
-                        bottom = 16.dp
+                        .weight(9f),
+                    animationSpec = tween(
+                        durationMillis = 400,
+                        easing = LinearEasing
                     ),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    itemsIndexed(items = tables) { index, item ->
-                        if (currentTable.id == item.id) {
+                    label = ""
+                ) { state ->
+                    when (state) {
+                        is TableDialogState.Loading -> {
                             Box(
                                 modifier = Modifier
-                                    .size(height = 70.dp, width = 120.dp)
-                                    .border(
-                                        border = BorderStroke(2.dp, Color.Black),
-                                        shape = RectangleShape
-                                    )
-                                    .background(Color.Green),
-                                contentAlignment = Alignment.Center
+                                    .fillMaxSize(),
                             ) {
-                                Text(
-                                    text = "Столик №${item.title}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                        } else {
-                            Box(
-                                modifier = Modifier
-                                    .size(height = 70.dp, width = 120.dp)
-                                    .border(
-                                        border = BorderStroke(2.dp, Color.Black),
-                                        shape = RectangleShape
-                                    )
-                                    .background(Color.Red)
-                                    .clickable {
-                                        onSaveTableClick(item)
-                                    },
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "Столик №${item.title}",
-                                    style = MaterialTheme.typography.bodyMedium
+                                CircularProgressIndicator(
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.align(Alignment.Center)
                                 )
                             }
                         }
+
+                        is TableDialogState.Error -> {
+                            Toast.makeText(localContext, "${state.errorMessage}", Toast.LENGTH_LONG)
+                                .show()
+                        }
+
+                        is TableDialogState.Loaded -> {
+                            ChooseTableDialogMain(
+                                tables = tables,
+                                currentTable = currentTable,
+                                onSaveTableClick = onSaveTableClick
+                            )
+                        }
+
+                        is TableDialogState.Idle -> {}
+
+                        else -> {}
                     }
                 }
             }

@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 @Singleton
 class TableVersionRemoteDatasource @Inject constructor(private val apiService: ApiService) {
-    suspend fun getTableVersions(tableName: String): TableVersionRemoteModelList.TableVersionRemoteModel =
+    suspend fun loadTableVersions(tableName: String): TableVersionRemoteModelList.TableVersionRemoteModel =
         withContext(Dispatchers.IO) {
-            for (tableVersion in apiService.getTableVersions().items) {
+            for (tableVersion in apiService.loadTableVersions().items) {
                 if (tableVersion.tableName == tableName) {
                     return@withContext tableVersion
                 }

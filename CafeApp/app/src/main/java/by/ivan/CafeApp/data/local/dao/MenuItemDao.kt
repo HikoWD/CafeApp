@@ -13,7 +13,7 @@ interface MenuItemDao {
     fun getById(id: Int): Flow<MenuItemLocalModel>
 
     @Query("SELECT * FROM MenuItemLocalModel WHERE title like '%' || :title || '%'")
-    fun getByTitle(title: String): Flow<List<MenuItemLocalModel>>
+    suspend fun getByTitle(title: String): List<MenuItemLocalModel>
 
     @Query("SELECT * FROM MenuItemLocalModel WHERE categoryId = :categoryId")
     fun getByCategoryId(categoryId: Int): Flow<List<MenuItemLocalModel>>

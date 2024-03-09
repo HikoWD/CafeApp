@@ -12,8 +12,8 @@ import javax.inject.Singleton
 
 @Singleton
 class CategoryRemoteDatasource @Inject constructor(private val apiService: ApiService) {
-    suspend fun getCategories(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage> =
+    suspend fun loadCategories(): NetworkResponse<CategoryRemoteModelList, ResponseErrorMessage> =
         withContext(Dispatchers.IO) {
-            return@withContext apiService.getCategories()
+            return@withContext apiService.loadCategories()
         }
 }

@@ -4,17 +4,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
-import by.ivan.CafeApp.domain.category.model.Category
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import by.ivan.CafeApp.domain.menu.model.MenuItem
 import by.ivan.CafeApp.presentation.MenuNavGraph
 import by.ivan.CafeApp.presentation.menu_screen.main.MenuItemsMain
+import by.ivan.CafeApp.presentation.menu_screen.model.CategoryUi
 import by.ivan.CafeApp.presentation.menu_screen.top_bar.MenuItemsTopBar
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -27,7 +27,7 @@ fun MenuItemsScreen(
     paddingValuesParent: PaddingValues,
     onMenuButtonClick: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     MenuItemsScreen(
         viewModel = viewModel,
@@ -36,11 +36,9 @@ fun MenuItemsScreen(
         categoriesScreenState = state.categoriesScreenState,
         menuItemsScreenState = state.menuItemsScreenState,
         paddingValuesParent = paddingValuesParent,
-        onGetMenuItemsByCategoryIdClick = { viewModel.getMenuItemsByCategoryId(categoryId = it) },
-        onGetMenuItemsSortedByAlphabetClick = { viewModel.getMenuItemsSortedByAlphabet(categoryId = it) },
-        onGetMenuItemsSortedByPriceClick = {
-            viewModel.getMenuItemsSortedByPrice(categoryId = it)
-        },
+        onGetMenuItemsByCategoryIdClick = { viewModel.selectCategory(selectedCategory = it) },
+        onGetMenuItemsSortedByAlphabetClick = { viewModel.getMenuItemsSortedByAlphabet() },
+        onGetMenuItemsSortedByPriceClick = { viewModel.getMenuItemsSortedByPrice() },
         onAddMenuItemToCartClick = { viewModel.addMenuItemToCart(menuItem = it) },
         onMenuButtonClick = onMenuButtonClick,
     )
@@ -49,14 +47,14 @@ fun MenuItemsScreen(
 @Composable
 private fun MenuItemsScreen(
     viewModel: MenuItemsScreenViewModel,
-    categories: List<Category> = listOf(),
+    categories: List<CategoryUi> = listOf(),
     menuItems: List<MenuItem> = listOf(),
     categoriesScreenState: CategoriesScreenState = CategoriesScreenState.Idle,
     menuItemsScreenState: MenuItemsScreenState = MenuItemsScreenState.Idle,
     paddingValuesParent: PaddingValues = PaddingValues(2.dp),
-    onGetMenuItemsByCategoryIdClick: (categoryId: Int) -> Unit = {},
-    onGetMenuItemsSortedByAlphabetClick: (categoryId: Int) -> Unit = {},
-    onGetMenuItemsSortedByPriceClick: (categoryId: Int) -> Unit = {},
+    onGetMenuItemsByCategoryIdClick: (CategoryUi) -> Unit = {},
+    onGetMenuItemsSortedByAlphabetClick: () -> Unit = {},
+    onGetMenuItemsSortedByPriceClick: () -> Unit = {},
     onAddMenuItemToCartClick: (menuItem: MenuItem) -> Unit = {},
     onMenuButtonClick: () -> Unit = {},
 ) {
@@ -65,7 +63,9 @@ private fun MenuItemsScreen(
         topBar = {
             MenuItemsTopBar(
                 viewModel = viewModel,
-                menuItems = menuItems,
+                categories = categories,
+                categoriesScreenState = categoriesScreenState,
+                onSelectCategoryClick = onGetMenuItemsByCategoryIdClick,
                 onGetMenuItemsSortedByAlphabetClick = onGetMenuItemsSortedByAlphabetClick,
                 onGetMenuItemsSortedByPriceClick = onGetMenuItemsSortedByPriceClick,
                 onMenuButtonClick = onMenuButtonClick
@@ -74,11 +74,8 @@ private fun MenuItemsScreen(
         content = { paddingValuesChild ->
             MenuItemsMain(
                 viewModel = viewModel,
-                categories = categories,
                 menuItems = menuItems,
-                categoriesScreenState = categoriesScreenState,
                 menuItemsScreenState = menuItemsScreenState,
-                onGetMenuItemsByCategoryIdClick = onGetMenuItemsByCategoryIdClick,
                 onAddMenuItemToCartClick = onAddMenuItemToCartClick,
                 paddingValuesParent = paddingValuesParent,
                 paddingValuesChild = paddingValuesChild

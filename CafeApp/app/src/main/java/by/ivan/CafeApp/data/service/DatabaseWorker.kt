@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import by.ivan.CafeApp.domain.category.usecase.SearchNewCategoryUseCase
-import by.ivan.CafeApp.domain.menu.usecase.SearchNewMenuItemUseCase
+import by.ivan.CafeApp.domain.category.usecase.LoadCategoriesUseCase
+import by.ivan.CafeApp.domain.menu.usecase.LoadMenuItemsUseCase
 import by.ivan.CafeApp.domain.result.CompletableResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -18,12 +18,12 @@ class DatabaseWorker @AssistedInject constructor(
     private val context: Context,
     @Assisted
     private val params: WorkerParameters,
-    private val searchNewCategoryUseCase: SearchNewCategoryUseCase,
-    private val searchNewMenuItemUseCase: SearchNewMenuItemUseCase,
+    private val loadCategoriesUseCase: LoadCategoriesUseCase,
+    private val loadMenuItemsUseCase: LoadMenuItemsUseCase,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        val categorySearchResult = searchNewCategoryUseCase()
-        val menuItemSearchResult = searchNewMenuItemUseCase()
+        val categorySearchResult = loadCategoriesUseCase()
+        val menuItemSearchResult = loadMenuItemsUseCase()
         if (categorySearchResult == CompletableResult.Success && menuItemSearchResult == CompletableResult.Success) {
             return@withContext Result.success()
         } else {

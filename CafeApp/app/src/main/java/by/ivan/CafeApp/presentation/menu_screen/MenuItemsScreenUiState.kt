@@ -1,15 +1,13 @@
 package by.ivan.CafeApp.presentation.menu_screen
 
-import by.ivan.CafeApp.domain.category.model.Category
 import by.ivan.CafeApp.domain.menu.model.MenuItem
+import by.ivan.CafeApp.presentation.menu_screen.model.CategoryUi
 
 data class MenuItemsScreenUiState(
-    val categories: List<Category> = listOf(),
+    val categories: List<CategoryUi> = listOf(),
     val menuItems: List<MenuItem> = listOf(),
     val errorCategories: String = "",
     val errorMenuItems: String = "",
-    val categoriesIsLoading: Boolean = false,
-    val menuItemsIsLoading: Boolean = false,
     val categoriesScreenState: CategoriesScreenState = CategoriesScreenState.Idle,
     val menuItemsScreenState: MenuItemsScreenState = MenuItemsScreenState.Idle,
 )

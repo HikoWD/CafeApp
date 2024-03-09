@@ -13,7 +13,7 @@ class TableVersionsRepository @Inject constructor(
     private val tableVersionRemoteDatasource: TableVersionRemoteDatasource
 ) {
     suspend fun getRemoteTableVersion(tableName: String): TableVersionRemoteModelList.TableVersionRemoteModel {
-        return tableVersionRemoteDatasource.getTableVersions(tableName)
+        return tableVersionRemoteDatasource.loadTableVersions(tableName)
     }
 
     suspend fun getLocalTableVersion(tableName: String): TableVersionLocalModel {
